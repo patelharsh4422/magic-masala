@@ -1,14 +1,13 @@
 // ============================================================
-//  Magic Masala Restaurant — Node.js + Express + JSON Database
-//  NO extra build tools needed!
+//  Magic Masala Restaurant — Node.js + Express + MongoDB Atlas
 //  Run:  npm install  →  node server.js
 //  Open: http://localhost:3000
 // ============================================================
 
-const express = require('express');
-const cors    = require('cors');
-const path    = require('path');
-const fs      = require('fs');
+const express  = require('express');
+const mongoose = require('mongoose');
+const cors     = require('cors');
+const path     = require('path');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -18,98 +17,105 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// ── JSON Database Setup ─────────────────────────────────────
-const DB_FILE = path.join(__dirname, 'database', 'data.json');
+// ── MongoDB Connection ──────────────────────────────────────
+// Paste your MongoDB Atlas connection string below
+const MONGO_URI = process.env.MONGO_URI || 'YOUR_MONGODB_CONNECTION_STRING_HERE';
 
-// Create database folder and file if not exists
-if (!fs.existsSync(path.join(__dirname, 'database'))) {
-  fs.mkdirSync(path.join(__dirname, 'database'));
-}
-if (!fs.existsSync(DB_FILE)) {
-  fs.writeFileSync(DB_FILE, JSON.stringify({
-    bookings: [],
-    orders:   [],
-    messages: []
-  }, null, 2));
-}
-
-// Read database
-function readDB() {
-  return JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
-}
-
-// Write database
-function writeDB(data) {
-  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
-}
-
-// Get current time
-function now() {
-  return new Date().toLocaleString('en-IN', {
-    day:    '2-digit',
-    month:  'short',
-    year:   'numeric',
-    hour:   '2-digit',
-    minute: '2-digit',
-    hour12: true
+mongoose.connect(MONGO_URI)
+  .then(() => console.log('✅ MongoDB Connected Successfully!'))
+  .catch(err => {
+    console.log('❌ MongoDB Connection Failed:', err.message);
+    console.log('👉 Make sure you added your connection string correctly in server.js');
   });
-}
 
-console.log('✅ JSON Database ready — data.json');
+// ── Schemas & Models ────────────────────────────────────────
+
+// BOOKING SCHEMA
+const bookingSchema = new mongoose.Schema({
+  name     : { type: String, required: true },
+  phone    : { type: String, required: true },
+  email    : { type: String, default: '' },
+  date     : { type: String, required: true },
+  time     : { type: String, required: true },
+  guests   : { type: String, required: true },
+  special  : { type: String, default: '' },
+  status   : { type: String, default: 'New' },
+}, { timestamps: true });
+
+// ORDER SCHEMA
+const orderSchema = new mongoose.Schema({
+  name   : { type: String, required: true },
+  phone  : { type: String, required: true },
+  email  : { type: String, default: '' },
+  items  : { type: String, required: true },
+  total  : { type: Number, required: true },
+  status : { type: String, default: 'New' },
+}, { timestamps: true });
+
+// MESSAGE SCHEMA
+const messageSchema = new mongoose.Schema({
+  name    : { type: String, required: true },
+  message : { type: String, required: true },
+  status  : { type: String, default: 'New' },
+}, { timestamps: true });
+
+const Booking = mongoose.model('Booking', bookingSchema);
+const Order   = mongoose.model('Order',   orderSchema);
+const Message = mongoose.model('Message', messageSchema);
 
 // ══════════════════════════════════════════════════════════
 //  BOOKINGS API
 // ══════════════════════════════════════════════════════════
 
 // Create booking
-app.post('/api/bookings', (req, res) => {
-  const { name, phone, email, date, time, guests, special } = req.body;
+app.post('/api/bookings', async (req, res) => {
+  try {
+    const { name, phone, email, date, time, guests, special } = req.body;
 
-  if (!name || !phone || !date || !time || !guests) {
-    return res.status(400).json({ error: 'Missing required fields' });
+    if (!name || !phone || !date || !time || !guests) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    const booking = await Booking.create({ name, phone, email, date, time, guests, special });
+
+    res.status(201).json({
+      success : true,
+      id      : booking._id,
+      message : `Table booked! Confirmation ID: #${booking._id}`
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
-
-  const db      = readDB();
-  const newItem = {
-    id         : Date.now(),
-    name, phone,
-    email      : email   || '',
-    date, time, guests,
-    special    : special || '',
-    status     : 'New',
-    created_at : now()
-  };
-
-  db.bookings.unshift(newItem);
-  writeDB(db);
-
-  res.status(201).json({
-    success : true,
-    id      : newItem.id,
-    message : `Confirmation ID: #${newItem.id}`
-  });
 });
 
 // Get all bookings
-app.get('/api/bookings', (req, res) => {
-  res.json(readDB().bookings);
+app.get('/api/bookings', async (req, res) => {
+  try {
+    const bookings = await Booking.find().sort({ createdAt: -1 });
+    res.json(bookings);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // Update booking status
-app.patch('/api/bookings/:id', (req, res) => {
-  const db   = readDB();
-  const item = db.bookings.find(b => b.id == req.params.id);
-  if (item) item.status = req.body.status;
-  writeDB(db);
-  res.json({ success: true });
+app.patch('/api/bookings/:id', async (req, res) => {
+  try {
+    await Booking.findByIdAndUpdate(req.params.id, { status: req.body.status });
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // Delete booking
-app.delete('/api/bookings/:id', (req, res) => {
-  const db       = readDB();
-  db.bookings    = db.bookings.filter(b => b.id != req.params.id);
-  writeDB(db);
-  res.json({ success: true });
+app.delete('/api/bookings/:id', async (req, res) => {
+  try {
+    await Booking.findByIdAndDelete(req.params.id);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // ══════════════════════════════════════════════════════════
@@ -117,45 +123,44 @@ app.delete('/api/bookings/:id', (req, res) => {
 // ══════════════════════════════════════════════════════════
 
 // Place order
-app.post('/api/orders', (req, res) => {
-  const { name, phone, email, items, total } = req.body;
+app.post('/api/orders', async (req, res) => {
+  try {
+    const { name, phone, email, items, total } = req.body;
 
-  if (!name || !phone || !items || !total) {
-    return res.status(400).json({ error: 'Missing required fields' });
+    if (!name || !phone || !items || !total) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    const order = await Order.create({ name, phone, email, items, total });
+
+    res.status(201).json({
+      success : true,
+      id      : order._id,
+      message : `Order placed! Order ID: #${order._id}`
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
-
-  const db      = readDB();
-  const newItem = {
-    id         : Date.now(),
-    name, phone,
-    email      : email || '',
-    items, total,
-    status     : 'New',
-    created_at : now()
-  };
-
-  db.orders.unshift(newItem);
-  writeDB(db);
-
-  res.status(201).json({
-    success : true,
-    id      : newItem.id,
-    message : `Order ID: #${newItem.id}`
-  });
 });
 
 // Get all orders
-app.get('/api/orders', (req, res) => {
-  res.json(readDB().orders);
+app.get('/api/orders', async (req, res) => {
+  try {
+    const orders = await Order.find().sort({ createdAt: -1 });
+    res.json(orders);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // Update order status
-app.patch('/api/orders/:id', (req, res) => {
-  const db   = readDB();
-  const item = db.orders.find(o => o.id == req.params.id);
-  if (item) item.status = req.body.status;
-  writeDB(db);
-  res.json({ success: true });
+app.patch('/api/orders/:id', async (req, res) => {
+  try {
+    await Order.findByIdAndUpdate(req.params.id, { status: req.body.status });
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // ══════════════════════════════════════════════════════════
@@ -163,30 +168,29 @@ app.patch('/api/orders/:id', (req, res) => {
 // ══════════════════════════════════════════════════════════
 
 // Send message
-app.post('/api/messages', (req, res) => {
-  const { name, message } = req.body;
+app.post('/api/messages', async (req, res) => {
+  try {
+    const { name, message } = req.body;
 
-  if (!name || !message) {
-    return res.status(400).json({ error: 'Missing required fields' });
+    if (!name || !message) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    const msg = await Message.create({ name, message });
+    res.status(201).json({ success: true, id: msg._id });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
-
-  const db      = readDB();
-  const newItem = {
-    id         : Date.now(),
-    name, message,
-    status     : 'New',
-    created_at : now()
-  };
-
-  db.messages.unshift(newItem);
-  writeDB(db);
-
-  res.status(201).json({ success: true, id: newItem.id });
 });
 
 // Get all messages
-app.get('/api/messages', (req, res) => {
-  res.json(readDB().messages);
+app.get('/api/messages', async (req, res) => {
+  try {
+    const messages = await Message.find().sort({ createdAt: -1 });
+    res.json(messages);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // ══════════════════════════════════════════════════════════
@@ -208,15 +212,20 @@ app.get('/api/menu', (req, res) => {
 //  STATS API
 // ══════════════════════════════════════════════════════════
 
-app.get('/api/stats', (req, res) => {
-  const db      = readDB();
-  const revenue = db.orders.reduce((sum, o) => sum + Number(o.total || 0), 0);
-  res.json({
-    bookings : db.bookings.length,
-    orders   : db.orders.length,
-    messages : db.messages.length,
-    revenue
-  });
+app.get('/api/stats', async (req, res) => {
+  try {
+    const bookings = await Booking.countDocuments();
+    const orders   = await Order.countDocuments();
+    const messages = await Message.countDocuments();
+    const revenueData = await Order.aggregate([
+      { $group: { _id: null, total: { $sum: '$total' } } }
+    ]);
+    const revenue = revenueData[0]?.total || 0;
+
+    res.json({ bookings, orders, messages, revenue });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // ── Catch-all ───────────────────────────────────────────────
