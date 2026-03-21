@@ -285,7 +285,7 @@ footer p{font-size:.83rem;color:var(--t-muted);line-height:1.8;font-weight:300}
   </div>
   <footer>
     <div class="footer-logo">Magic Masala</div>
-    <p>Vastral, Ahmedabad, Gujarat – 382418<br>+91 93278 15264 &nbsp;·&nbsp; info@magicmasala.com<br>Mon – Sun: 11:00 AM – 11:00 PM</p>
+    <p>Vastral, Ahmedabad, Gujarat – 382418<br>+91 93278 15264 &nbsp;·&nbsp; <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1e777078715e737f79777d737f6d7f727f307d7173">[email&#160;protected]</a><br>Mon – Sun: 11:00 AM – 11:00 PM</p>
     <hr class="footer-line">
     <p class="footer-copy">© 2026 Magic Masala Restaurant & Banquets. All rights reserved.</p>
   </footer>
@@ -397,7 +397,7 @@ footer p{font-size:.83rem;color:var(--t-muted);line-height:1.8;font-weight:300}
       </div>
       <div class="info-card">
         <div class="info-icon">✉️</div>
-        <div><h4>Email</h4><p>info@magicmasala.com</p></div>
+        <div><h4>Email</h4><p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bdd4d3dbd2fdd0dcdad4ded0dccedcd1dc93ded2d0">[email&#160;protected]</a></p></div>
       </div>
       <div class="info-card">
         <div class="info-icon">🕐</div>
@@ -446,7 +446,7 @@ footer p{font-size:.83rem;color:var(--t-muted);line-height:1.8;font-weight:300}
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ─── CONFIG ──────────────────────────────────────────────────
 const API = ''; // same origin — Express serves both
 
@@ -767,7 +767,7 @@ async function renderAdmin() {
           <td>${b.guests}</td>
           <td style="max-width:140px;font-size:.8rem">${b.special || '—'}</td>
           <td><span class="${b.status==='Done'?'b-done':'b-new'}">${b.status}</span></td>
-          <td style="white-space:nowrap;font-size:.78rem">${b.created_at}</td>
+          <td style="white-space:nowrap;font-size:.78rem">${new Date(b.createdAt).toLocaleString("en-IN")}</td>
         </tr>`).join('')}</tbody>
       </table></div>`;
     } else if (curTab === 'orders') {
@@ -780,7 +780,7 @@ async function renderAdmin() {
           <td style="max-width:220px;font-size:.8rem">${o.items}</td>
           <td style="color:var(--gold);font-weight:600">Rs. ${o.total}</td>
           <td><span class="${o.status==='Done'?'b-done':'b-new'}">${o.status}</span></td>
-          <td style="white-space:nowrap;font-size:.78rem">${o.created_at}</td>
+          <td style="white-space:nowrap;font-size:.78rem">${new Date(o.createdAt).toLocaleString("en-IN")}</td>
         </tr>`).join('')}</tbody>
       </table></div>`;
     } else {
@@ -791,7 +791,7 @@ async function renderAdmin() {
           <td><strong>${m.name}</strong></td>
           <td style="max-width:320px">${m.message}</td>
           <td><span class="${m.status==='Done'?'b-done':'b-new'}">${m.status}</span></td>
-          <td style="white-space:nowrap;font-size:.78rem">${m.created_at}</td>
+          <td style="white-space:nowrap;font-size:.78rem">${new Date(m.createdAt).toLocaleString("en-IN")}</td>
         </tr>`).join('')}</tbody>
       </table></div>`;
     }
@@ -799,14 +799,4 @@ async function renderAdmin() {
     body.innerHTML = statsHTML + tableHTML;
 
   } catch(e) {
-    body.innerHTML = `<div class="empty-adm"><p>❌ Cannot reach server API. Make sure <code>node server.js</code> is running.</p></div>`;
-  }
-}
-
-// ─── INIT ────────────────────────────────────────────────────
-updateCount();
-loadHome();
-renderMenuPage();
-</script>
-</body>
-</html>
+    body.innerHTML = `<div class="empt
