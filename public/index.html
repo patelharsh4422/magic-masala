@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magic Masala | Restaurant & Banquets</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #180d03;
+  --bg-nav:    #180d03;
+  --bg-card:   #221208;
+  --bg-input:  #2a1608;
+  --bg-light:  #f5f0e8;
+  --gold:      #c8960a;
+  --white:     #ffffff;
+  --t-light:   rgba(255,255,255,0.85);
+  --t-muted:   rgba(255,255,255,0.42);
+  --border:    rgba(255,255,255,0.07);
+  --green-b:   #2d6a2d;
+  --red-b:     #8b1a1a;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:'Inter',sans-serif;font-weight:400;min-height:100vh;overflow-x:hidden}
+
+/* ── NAV ── */
+.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;background:var(--bg-nav);height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 40px}
+.logo{font-family:'Dancing Script',cursive;font-size:1.75rem;color:var(--gold);cursor:pointer;user-select:none}
+.nav-center{display:flex;align-items:center;gap:36px}
+.nav-link{font-size:.93rem;font-weight:400;color:var(--t-light);cursor:pointer;background:none;border:none;font-family:'Inter',sans-serif;padding:0;transition:color .2s}
+.nav-link:hover{color:#fff}
+.nav-link.active{color:var(--gold);font-weight:500}
+.nav-right{display:flex;align-items:center;gap:18px}
+.cart-wrap{position:relative;cursor:pointer;background:none;border:none;padding:6px;color:var(--white);font-size:1.2rem;line-height:1}
+.cart-badge{position:absolute;top:-1px;right:-3px;background:var(--gold);color:var(--bg);border-radius:50%;width:18px;height:18px;font-size:.63rem;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif}
+.btn-gold{background:var(--gold);color:#fff;border:none;padding:10px 22px;border-radius:50px;font-family:'Inter',sans-serif;font-size:.88rem;font-weight:500;cursor:pointer;transition:background .2s,transform .15s;display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+.btn-gold:hover{background:#d9a50e;transform:translateY(-1px)}
+
+/* ── PAGES ── */
+.page{display:none;min-height:100vh}
+.page.active{display:block}
+
+/* ── HERO ── */
+#home{padding-top:0}
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden}
+.hero-img{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=1600&q=80') center/cover no-repeat;filter:brightness(.42);transform:scale(1.04);animation:zoomBg 18s ease-in-out infinite alternate}
+@keyframes zoomBg{to{transform:scale(1.1)}}
+.hero-grad{position:absolute;inset:0;background:linear-gradient(90deg,rgba(24,13,3,.9) 45%,rgba(24,13,3,.1) 100%)}
+.hero-content{position:relative;z-index:2;padding:68px 60px 0;max-width:700px}
+.hero-welcome{font-family:'Dancing Script',cursive;font-size:1.5rem;color:var(--gold);margin-bottom:10px;display:block}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(3rem,5.5vw,4.5rem);font-weight:800;color:#fff;line-height:1.1;margin-bottom:4px}
+.hero-gold{font-family:'Playfair Display',serif;font-size:clamp(3rem,5.5vw,4.5rem);font-weight:800;color:var(--gold);line-height:1.1;display:block}
+.hero-desc{font-size:.97rem;color:rgba(255,255,255,.7);line-height:1.75;margin:22px 0 36px;max-width:480px;font-weight:300}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+.btn-hp{background:var(--gold);color:#fff;border:none;padding:13px 28px;border-radius:50px;font-family:'Inter',sans-serif;font-size:.93rem;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all .2s}
+.btn-hp:hover{background:#d9a50e;transform:translateY(-2px)}
+.btn-ho{background:rgba(255,255,255,.08);color:#fff;border:1.5px solid rgba(255,255,255,.35);padding:13px 28px;border-radius:50px;font-family:'Inter',sans-serif;font-size:.93rem;font-weight:400;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all .2s;backdrop-filter:blur(4px)}
+.btn-ho:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.6)}
+
+/* ── SECTION ── */
+.home-section{padding:72px 60px;background:var(--bg)}
+.sec-tag{font-family:'Dancing Script',cursive;color:var(--gold);font-size:1.2rem;display:block;text-align:center;margin-bottom:8px}
+.sec-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,3.5vw,2.7rem);font-weight:700;color:#fff;text-align:center;margin-bottom:10px}
+.sec-sub{text-align:center;color:var(--t-muted);font-size:.92rem;margin-bottom:44px;font-weight:300}
+
+/* ── MENU TOP ── */
+#menu{padding-top:68px}
+.menu-top{background:var(--bg);padding:52px 40px 0;text-align:center}
+.search-bar{max-width:480px;margin:0 auto 32px;position:relative}
+.search-bar input{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#fff;padding:12px 18px 12px 42px;border-radius:50px;font-family:'Inter',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s}
+.search-bar input::placeholder{color:rgba(255,255,255,.32)}
+.search-bar input:focus{border-color:rgba(255,255,255,.28)}
+.s-icon{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.32);pointer-events:none;font-size:.95rem}
+.cat-row{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;padding-bottom:36px}
+.cat-pill{background:transparent;border:1.5px solid rgba(255,255,255,.22);color:#fff;padding:8px 22px;border-radius:50px;font-family:'Inter',sans-serif;font-size:.87rem;cursor:pointer;transition:all .2s}
+.cat-pill:hover{border-color:rgba(255,255,255,.5)}
+.cat-pill.active{background:var(--gold);border-color:var(--gold);color:#fff;font-weight:600}
+
+/* ── CARDS SECTION ── */
+.cards-section{background:var(--bg-light);padding:40px 50px 60px}
+.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1200px;margin:0 auto}
+.dish-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.08);transition:transform .25s,box-shadow .25s}
+.dish-card:hover{transform:translateY(-4px);box-shadow:0 8px 30px rgba(0,0,0,.14)}
+.dish-img{position:relative;height:200px;overflow:hidden}
+.dish-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+.dish-card:hover .dish-img img{transform:scale(1.06)}
+.veg-badge,.nonveg-badge{position:absolute;top:10px;right:10px;padding:4px 10px;border-radius:50px;font-size:.73rem;font-weight:600;display:inline-flex;align-items:center;gap:4px;color:#fff;font-family:'Inter',sans-serif}
+.veg-badge{background:var(--green-b)}
+.nonveg-badge{background:var(--red-b)}
+.dish-body{padding:16px 18px 18px;background:#fff}
+.dish-name{font-family:'Playfair Display',serif;font-size:1.07rem;font-weight:700;color:#1a1108;margin-bottom:5px}
+.dish-desc{font-size:.82rem;color:#7a6a58;line-height:1.5;margin-bottom:16px;font-weight:400}
+.dish-footer{display:flex;align-items:center;justify-content:space-between}
+.dish-price{color:var(--gold);font-weight:600;font-size:1rem;font-family:'Inter',sans-serif}
+.add-btn{background:var(--gold);color:#fff;border:none;padding:8px 18px;border-radius:50px;font-size:.85rem;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-family:'Inter',sans-serif;transition:all .2s}
+.add-btn:hover{background:#d9a50e;transform:scale(1.04)}
+
+/* ── BOOK TABLE ── */
+#book{padding-top:68px}
+.page-top{background:var(--bg);padding:54px 40px 48px;text-align:center}
+.page-top h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,4vw,3rem);font-weight:800;color:#fff;margin-bottom:10px}
+.page-top p{color:var(--t-muted);font-size:.92rem;font-weight:300}
+.form-wrap{max-width:580px;margin:0 auto;padding:16px 20px 72px}
+.form-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:36px 38px}
+.f-g{margin-bottom:20px}
+.f-label{display:block;font-size:.86rem;font-weight:500;color:var(--t-light);margin-bottom:8px}
+.f-label .req{color:#e05252}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.f-ilabel{display:flex;align-items:center;gap:6px;font-size:.86rem;font-weight:500;color:var(--t-light);margin-bottom:8px}
+.f-input{width:100%;background:var(--bg-input);border:1px solid rgba(255,255,255,.07);color:#fff;padding:12px 15px;border-radius:8px;font-family:'Inter',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s;appearance:none;-webkit-appearance:none}
+.f-input:focus{border-color:rgba(255,255,255,.2)}
+.f-input::placeholder{color:rgba(255,255,255,.24)}
+.f-input option{background:#2a1608}
+.sel-wrap{position:relative}
+.sel-wrap::after{content:'▾';position:absolute;right:14px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.35);pointer-events:none;font-size:.85rem}
+textarea.f-input{resize:vertical;min-height:90px}
+.f-submit{width:100%;background:var(--gold);color:#fff;border:none;padding:14px;border-radius:10px;font-family:'Inter',sans-serif;font-size:.97rem;font-weight:600;cursor:pointer;transition:all .2s;margin-top:6px}
+.f-submit:hover{background:#d9a50e;box-shadow:0 4px 20px rgba(200,150,10,.3)}
+.f-submit:disabled{opacity:.6;cursor:not-allowed}
+
+/* ── CHECKOUT ── */
+#checkout{padding-top:68px;background:var(--bg)}
+.co-top{text-align:center;padding:48px 40px 40px}
+.co-top h1{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,5vw,3.8rem);font-weight:800;color:#fff}
+.co-body{max-width:1040px;margin:0 auto;padding:0 30px 72px;display:grid;grid-template-columns:1.15fr 1fr;gap:26px;align-items:start}
+.co-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:28px 30px}
+.co-card h3{font-family:'Playfair Display',serif;font-size:1.18rem;font-weight:700;color:#fff;margin-bottom:22px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.co-item{display:flex;align-items:center;padding:14px 0;border-bottom:1px solid var(--border);gap:10px}
+.co-info{flex:1}
+.co-info strong{font-size:.9rem;font-weight:600;color:#fff;display:block;margin-bottom:3px}
+.co-info span{font-size:.8rem;color:var(--gold)}
+.qty-ctrl{display:flex;align-items:center;gap:10px;margin:0 8px}
+.qb{width:28px;height:28px;background:var(--bg-input);border:1px solid rgba(255,255,255,.1);border-radius:50%;color:#fff;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;transition:all .15s}
+.qb:hover{background:var(--gold);border-color:var(--gold)}
+.qn{font-size:.9rem;min-width:18px;text-align:center}
+.del-btn{background:none;border:none;color:#d9534f;cursor:pointer;font-size:1rem;padding:4px;transition:transform .15s}
+.del-btn:hover{transform:scale(1.2)}
+.co-price{font-weight:600;font-size:.9rem;min-width:65px;text-align:right}
+.co-sum{padding-top:16px;display:flex;flex-direction:column;gap:6px}
+.co-row{display:flex;justify-content:space-between;align-items:center;font-size:.85rem}
+.co-row .l{color:var(--t-muted)}
+.co-row.total .l{color:#fff;font-weight:600;font-size:.97rem}
+.co-row.total .r{color:var(--gold);font-weight:700;font-size:1.05rem}
+.pay-btn{width:100%;background:var(--gold);color:#fff;border:none;padding:15px;border-radius:10px;font-family:'Inter',sans-serif;font-size:1rem;font-weight:600;cursor:pointer;margin-top:18px;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s}
+.pay-btn:hover{background:#d9a50e}
+.pay-btn:disabled{opacity:.6;cursor:not-allowed}
+.secure-txt{text-align:center;font-size:.75rem;color:var(--t-muted);margin-top:10px;font-weight:300}
+.empty-state{grid-column:1/-1;text-align:center;padding:80px 20px}
+.empty-state .ei{font-size:3rem;opacity:.35;margin-bottom:16px}
+.empty-state h3{font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:10px}
+.empty-state p{color:var(--t-muted);font-size:.9rem;margin-bottom:24px}
+
+/* ── CONTACT ── */
+#contact{padding-top:68px;background:var(--bg)}
+.contact-body{max-width:1100px;margin:0 auto;padding:48px 40px 72px;display:grid;grid-template-columns:1fr 1.3fr;gap:32px}
+.info-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:20px 22px;display:flex;align-items:flex-start;gap:16px;margin-bottom:12px;transition:border-color .2s;cursor:default}
+.info-card:hover{border-color:rgba(200,150,10,.3)}
+.info-icon{width:42px;height:42px;flex-shrink:0;background:rgba(200,150,10,.12);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem}
+.info-card h4{font-size:.92rem;font-weight:600;color:#fff;margin-bottom:4px}
+.info-card p{font-size:.84rem;color:var(--t-muted);line-height:1.6;font-weight:300}
+.wa-card{background:rgba(37,211,102,.05);border-color:rgba(37,211,102,.18)!important;cursor:pointer}
+.map-box{border:1px solid var(--border);border-radius:12px;overflow:hidden;height:430px}
+.map-box iframe{width:100%;height:100%;border:none;display:block}
+
+/* ── ADMIN ── */
+.admin-ov{display:none;position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.78);backdrop-filter:blur(6px);align-items:center;justify-content:center}
+.admin-ov.open{display:flex}
+.admin-box{background:var(--bg-card);border:1px solid rgba(200,150,10,.35);border-radius:16px;width:92%;max-width:1040px;max-height:86vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 80px rgba(0,0,0,.85)}
+.adm-head{display:flex;justify-content:space-between;align-items:center;padding:24px 28px;border-bottom:1px solid var(--border);flex-shrink:0}
+.adm-head h2{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--gold)}
+.adm-x{background:var(--bg-input);border:1px solid var(--border);color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.adm-x:hover{background:#c0392b;border-color:#c0392b}
+.adm-tabs{display:flex;gap:10px;padding:18px 28px;border-bottom:1px solid var(--border);flex-shrink:0}
+.a-tab{background:var(--bg-input);border:1px solid var(--border);color:var(--t-light);padding:8px 18px;border-radius:50px;font-family:'Inter',sans-serif;font-size:.84rem;cursor:pointer;transition:all .2s}
+.a-tab.active{background:var(--gold);border-color:var(--gold);color:#fff;font-weight:600}
+.adm-body{overflow-y:auto;padding:22px 28px 28px;flex:1}
+.a-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+.stat-card{background:var(--bg-input);border:1px solid var(--border);border-radius:10px;padding:18px;text-align:center}
+.stat-card .sv{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--gold);font-weight:700}
+.stat-card .sl{font-size:.78rem;color:var(--t-muted);margin-top:4px}
+.a-table{width:100%;border-collapse:collapse;font-size:.83rem}
+.a-table th{background:var(--bg-input);color:var(--gold);padding:11px 13px;text-align:left;font-weight:600;border-bottom:1px solid var(--border);white-space:nowrap}
+.a-table td{padding:11px 13px;border-bottom:1px solid var(--border);color:var(--t-light);vertical-align:middle}
+.a-table tr:hover td{background:rgba(200,150,10,.04)}
+.b-new{background:rgba(200,150,10,.18);color:var(--gold);padding:3px 10px;border-radius:50px;font-size:.72rem;font-weight:700}
+.b-done{background:rgba(45,106,45,.25);color:#5cb875;padding:3px 10px;border-radius:50px;font-size:.72rem;font-weight:700}
+.empty-adm{text-align:center;padding:50px 20px;color:var(--t-muted);font-size:.9rem}
+
+/* ── SECRET DOT ── */
+.secret-dot{position:fixed;bottom:20px;left:20px;width:10px;height:10px;border-radius:50%;background:rgba(200,150,10,.07);cursor:pointer;z-index:50;transition:background .3s}
+.secret-dot:hover{background:rgba(200,150,10,.28)}
+
+/* ── MODAL ── */
+.modal-ov{display:none;position:fixed;inset:0;z-index:8000;background:rgba(0,0,0,.65);backdrop-filter:blur(4px);align-items:center;justify-content:center}
+.modal-ov.open{display:flex}
+.modal-box{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:50px 40px;text-align:center;max-width:420px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.7)}
+.modal-icon{font-size:2.8rem;margin-bottom:14px}
+.modal-box h3{font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:10px}
+.modal-box p{color:var(--t-muted);font-size:.9rem;margin-bottom:26px;line-height:1.65;font-weight:300}
+.modal-ok{background:var(--gold);color:#fff;border:none;padding:12px 36px;border-radius:50px;font-size:.92rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif}
+.modal-ok:hover{background:#d9a50e}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:28px;right:28px;background:var(--bg-card);border:1px solid rgba(200,150,10,.4);border-radius:10px;padding:13px 20px;font-size:.87rem;color:#fff;z-index:9999;transform:translateY(80px);opacity:0;transition:all .3s ease;max-width:300px;box-shadow:0 8px 32px rgba(0,0,0,.5);pointer-events:none}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* ── SPINNER ── */
+.spinner{display:inline-block;width:20px;height:20px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:8px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── FOOTER ── */
+footer{background:var(--bg-card);border-top:1px solid var(--border);padding:48px 60px 30px;text-align:center}
+.footer-logo{font-family:'Dancing Script',cursive;font-size:1.8rem;color:var(--gold);margin-bottom:12px}
+footer p{font-size:.83rem;color:var(--t-muted);line-height:1.8;font-weight:300}
+.footer-line{border:none;border-top:1px solid var(--border);margin:22px 0}
+.footer-copy{font-size:.76rem;color:rgba(255,255,255,.18)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .cards-grid{grid-template-columns:repeat(2,1fr)}
+  .co-body,.contact-body{grid-template-columns:1fr}
+  .a-stats{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+  .navbar{padding:0 18px}
+  .nav-center{display:none}
+  .hero-content{padding:68px 24px 0}
+  .home-section,.cards-section{padding-left:16px;padding-right:16px}
+  .cards-grid{grid-template-columns:1fr}
+  .form-card{padding:24px 18px}
+  .f-row{grid-template-columns:1fr}
+  .co-body{padding:0 14px 60px}
+  .contact-body{padding:30px 16px 60px}
+  .a-stats{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="logo" onclick="go('home')">Magic Masala</div>
+  <div class="nav-center">
+    <button class="nav-link active" id="nl-home"    onclick="go('home')">Home</button>
+    <button class="nav-link"        id="nl-menu"    onclick="go('menu')">Menu</button>
+    <button class="nav-link"        id="nl-book"    onclick="go('book')">Book Table</button>
+    <button class="nav-link"        id="nl-contact" onclick="go('contact')">Contact</button>
+  </div>
+  <div class="nav-right">
+    <button class="cart-wrap" onclick="go('checkout')">
+      🛒 <span class="cart-badge" id="cart-count">0</span>
+    </button>
+    <button class="btn-gold" onclick="go('book')">📅 Book a Table</button>
+  </div>
+</nav>
+
+<!-- HOME -->
+<div id="home" class="page active">
+  <div class="hero">
+    <div class="hero-img"></div>
+    <div class="hero-grad"></div>
+    <div class="hero-content">
+      <span class="hero-welcome">Welcome to</span>
+      <h1 class="hero-title">Magic Masala</h1>
+      <span class="hero-gold">Restaurant &amp;<br>Banquets</span>
+      <p class="hero-desc">Experience the royal flavors of India. From aromatic biryanis to rich curries, every dish tells a story of tradition and taste.</p>
+      <div class="hero-btns">
+        <button class="btn-hp" onclick="go('book')">📅 Book a Table</button>
+        <button class="btn-ho" onclick="go('menu')">🍽️ Order Now</button>
+      </div>
+    </div>
+  </div>
+  <div class="home-section">
+    <span class="sec-tag">Our Specialities</span>
+    <h2 class="sec-title">Popular Dishes</h2>
+    <p class="sec-sub">Handcrafted with authentic Indian spices, made fresh to order</p>
+    <div class="cards-section" style="background:var(--bg-light);border-radius:16px;padding:32px 24px;">
+      <div class="cards-grid" id="home-grid"><div style="text-align:center;padding:40px;color:#a08060;grid-column:1/-1">Loading dishes...</div></div>
+    </div>
+    <div style="text-align:center;margin-top:36px">
+      <button class="btn-gold" style="padding:13px 40px;font-size:.95rem" onclick="go('menu')">View Full Menu →</button>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-logo">Magic Masala</div>
+    <p>Vastral, Ahmedabad, Gujarat – 382418<br>+91 93278 15264 &nbsp;·&nbsp; info@magicmasala.com<br>Mon – Sun: 11:00 AM – 11:00 PM</p>
+    <hr class="footer-line">
+    <p class="footer-copy">© 2026 Magic Masala Restaurant & Banquets. All rights reserved.</p>
+  </footer>
+</div>
+
+<!-- MENU -->
+<div id="menu" class="page">
+  <div class="menu-top">
+    <span class="sec-tag">Discover</span>
+    <h2 class="sec-title">Our Menu</h2>
+    <p class="sec-sub">Handcrafted dishes with authentic Indian spices, made fresh to order.</p>
+    <div class="search-bar">
+      <span class="s-icon">🔍</span>
+      <input type="text" id="search-inp" placeholder="Search dishes..." oninput="filterMenu()">
+    </div>
+    <div class="cat-row" id="cat-row"></div>
+  </div>
+  <div class="cards-section">
+    <div class="cards-grid" id="menu-grid"></div>
+  </div>
+</div>
+
+<!-- BOOK TABLE -->
+<div id="book" class="page">
+  <div class="page-top">
+    <h1>Book a Table</h1>
+    <p>Reserve your spot for an unforgettable dining experience.</p>
+  </div>
+  <div class="form-wrap">
+    <div class="form-card">
+      <div class="f-g">
+        <label class="f-label">Full Name <span class="req">*</span></label>
+        <input id="b-name" class="f-input" type="text" placeholder="Your name">
+      </div>
+      <div class="f-g">
+        <label class="f-label">Phone Number <span class="req">*</span></label>
+        <input id="b-phone" class="f-input" type="tel" placeholder="+91 XXXXX XXXXX">
+      </div>
+      <div class="f-g">
+        <label class="f-label">Email</label>
+        <input id="b-email" class="f-input" type="email" placeholder="your@email.com">
+      </div>
+      <div class="f-row f-g">
+        <div>
+          <div class="f-ilabel">📅 Date <span class="req" style="color:#e05252">*</span></div>
+          <input id="b-date" class="f-input" type="date">
+        </div>
+        <div>
+          <div class="f-ilabel">🕐 Time <span class="req" style="color:#e05252">*</span></div>
+          <div class="sel-wrap">
+            <select id="b-time" class="f-input">
+              <option value="">Select time</option>
+              <option>11:00 AM</option><option>11:30 AM</option>
+              <option>12:00 PM</option><option>12:30 PM</option>
+              <option>01:00 PM</option><option>01:30 PM</option>
+              <option>02:00 PM</option><option>07:00 PM</option>
+              <option>07:30 PM</option><option>08:00 PM</option>
+              <option>08:30 PM</option><option>09:00 PM</option>
+              <option>09:30 PM</option><option>10:00 PM</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="f-g">
+        <div class="f-ilabel">👥 Number of Guests <span class="req" style="color:#e05252">*</span></div>
+        <div class="sel-wrap">
+          <select id="b-guests" class="f-input">
+            <option value="">Select guests</option>
+            <option>1 Guest</option><option>2 Guests</option>
+            <option>3 Guests</option><option>4 Guests</option>
+            <option>5 Guests</option><option>6 Guests</option>
+            <option>7 Guests</option><option>8+ Guests</option>
+          </select>
+        </div>
+      </div>
+      <div class="f-g">
+        <label class="f-label">Special Requests</label>
+        <textarea id="b-special" class="f-input" placeholder="Any dietary requirements or special arrangements?"></textarea>
+      </div>
+      <button class="f-submit" id="book-btn" onclick="submitBooking()">📅 Confirm Booking</button>
+    </div>
+  </div>
+</div>
+
+<!-- CHECKOUT -->
+<div id="checkout" class="page">
+  <div class="co-top">
+    <span class="sec-tag">Almost There</span>
+    <h1>Checkout</h1>
+  </div>
+  <div id="co-wrap"></div>
+</div>
+
+<!-- CONTACT -->
+<div id="contact" class="page">
+  <div class="page-top">
+    <h1>Contact Us</h1>
+    <p>We'd love to hear from you. Drop by or reach out anytime!</p>
+  </div>
+  <div class="contact-body">
+    <div>
+      <div class="info-card">
+        <div class="info-icon">📍</div>
+        <div><h4>Address</h4><p>Vastral, Ahmedabad<br>Gujarat, India – 382418</p></div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon">📞</div>
+        <div><h4>Phone</h4><p>+91 93278 15264</p></div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon">✉️</div>
+        <div><h4>Email</h4><p>info@magicmasala.com</p></div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon">🕐</div>
+        <div><h4>Opening Hours</h4><p>Mon – Sun: 11:00 AM – 11:00 PM</p></div>
+      </div>
+      <div class="info-card wa-card" onclick="window.open('https://wa.me/919327815264')">
+        <div class="info-icon" style="background:rgba(37,211,102,.14)">💬</div>
+        <div><h4>Chat on WhatsApp</h4><p>Quick response, direct chat</p></div>
+      </div>
+    </div>
+    <div class="map-box">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3673.5!2d72.6514!3d22.9784!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e85b1e0000001%3A0x1!2sVastral%2C+Ahmedabad%2C+Gujarat!5e0!3m2!1sen!2sin!4v1" loading="lazy"></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- SECRET DOT (owner admin) -->
+<div class="secret-dot" onclick="openAdmin()"></div>
+
+<!-- ADMIN PANEL -->
+<div class="admin-ov" id="admin-ov">
+  <div class="admin-box">
+    <div class="adm-head">
+      <h2>🔐 Owner Dashboard</h2>
+      <button class="adm-x" onclick="closeAdmin()">✕</button>
+    </div>
+    <div class="adm-tabs">
+      <button class="a-tab active" id="tab-b" onclick="aTab('bookings',this)">📅 Bookings</button>
+      <button class="a-tab"        id="tab-o" onclick="aTab('orders',this)">🍽️ Orders</button>
+      <button class="a-tab"        id="tab-m" onclick="aTab('messages',this)">✉️ Messages</button>
+    </div>
+    <div class="adm-body" id="adm-body"></div>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-ov" id="modal-ov">
+  <div class="modal-box">
+    <div class="modal-icon">✅</div>
+    <h3 id="modal-title"></h3>
+    <p id="modal-desc"></p>
+    <button class="modal-ok" onclick="closeModal()">Great, Thanks!</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── CONFIG ──────────────────────────────────────────────────
+const API = ''; // same origin — Express serves both
+
+// ─── CART (localStorage) ────────────────────────────────────
+let cart = JSON.parse(localStorage.getItem('mm_cart') || '[]');
+const saveCart = () => { localStorage.setItem('mm_cart', JSON.stringify(cart)); updateCount(); };
+
+function addToCart(id, name, price) {
+  const ex = cart.find(c => c.id === id);
+  if (ex) ex.qty++;
+  else cart.push({ id, name, price, qty: 1 });
+  saveCart();
+  toast('🛒 ' + name + ' added to cart!');
+}
+function removeFromCart(id) { cart = cart.filter(c => c.id !== id); saveCart(); renderCheckout(); }
+function changeQty(id, d) {
+  const item = cart.find(c => c.id === id);
+  if (!item) return;
+  item.qty += d;
+  if (item.qty <= 0) removeFromCart(id);
+  else { saveCart(); renderCheckout(); }
+}
+function updateCount() {
+  document.getElementById('cart-count').textContent = cart.reduce((s, c) => s + c.qty, 0);
+}
+
+// ─── NAVIGATION ──────────────────────────────────────────────
+const PAGES = ['home','menu','book','checkout','contact'];
+function go(id) {
+  PAGES.forEach(p => document.getElementById(p).classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  ['home','menu','book','contact'].forEach(p => {
+    const el = document.getElementById('nl-' + p);
+    if (el) el.classList.toggle('active', p === id);
+  });
+  window.scrollTo(0, 0);
+  if (id === 'checkout') renderCheckout();
+  if (id === 'menu') renderMenuPage();
+}
+
+// ─── DISH CARD HTML ──────────────────────────────────────────
+function dishCard(item) {
+  const badge = item.veg
+    ? `<span class="veg-badge">🌿 Veg</span>`
+    : `<span class="nonveg-badge">🔗 Non-Veg</span>`;
+  return `<div class="dish-card">
+    <div class="dish-img">
+      <img src="${item.img}" alt="${item.name}" loading="lazy"
+           onerror="this.src='https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=500&q=80'">
+      ${badge}
+    </div>
+    <div class="dish-body">
+      <div class="dish-name">${item.name}</div>
+      <div class="dish-desc">${item.desc}</div>
+      <div class="dish-footer">
+        <span class="dish-price">Rs. ${item.price}</span>
+        <button class="add-btn" onclick="addToCart(${item.id},'${item.name.replace(/'/g,"\\'")}',${item.price})">+ Add</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─── HOME — load from API ────────────────────────────────────
+async function loadHome() {
+  try {
+    const res  = await fetch(API + '/api/menu');
+    const data = await res.json();
+    document.getElementById('home-grid').innerHTML = data.slice(0, 6).map(dishCard).join('');
+  } catch(e) {
+    document.getElementById('home-grid').innerHTML = '<p style="color:#a08060;text-align:center;padding:40px;grid-column:1/-1">Could not load menu. Make sure the server is running.</p>';
+  }
+}
+
+// ─── MENU PAGE ───────────────────────────────────────────────
+const CATS = ['All','Beverages','Breads','Desserts','Main Course','Rice & Biryani','Starters'];
+let activeCat = 'All';
+let allMenu   = [];
+
+async function renderMenuPage() {
+  // Build category pills
+  document.getElementById('cat-row').innerHTML = CATS.map(c =>
+    `<button class="cat-pill ${c === activeCat ? 'active' : ''}" onclick="setCat('${c}')">${c}</button>`
+  ).join('');
+
+  if (!allMenu.length) {
+    try {
+      const res = await fetch(API + '/api/menu');
+      allMenu   = await res.json();
+    } catch(e) {
+      document.getElementById('menu-grid').innerHTML = '<p style="color:#a08060;text-align:center;padding:40px;grid-column:1/-1">Server not reachable.</p>';
+      return;
+    }
+  }
+  filterMenu();
+}
+
+function setCat(c) { activeCat = c; renderMenuPage(); }
+
+function filterMenu() {
+  const q = (document.getElementById('search-inp')?.value || '').toLowerCase();
+  let list = allMenu;
+  if (activeCat !== 'All') list = list.filter(i => i.cat === activeCat);
+  if (q) list = list.filter(i =>
+    i.name.toLowerCase().includes(q) || i.desc.toLowerCase().includes(q)
+  );
+  const grid = document.getElementById('menu-grid');
+  if (grid) grid.innerHTML = list.length
+    ? list.map(dishCard).join('')
+    : `<p style="color:#a08060;text-align:center;padding:50px 20px;grid-column:1/-1;font-size:.95rem">No dishes found 🍽️</p>`;
+}
+
+// ─── CHECKOUT ───────────────────────────────────────────────
+function renderCheckout() {
+  const wrap = document.getElementById('co-wrap');
+  if (!cart.length) {
+    wrap.innerHTML = `<div class="co-body"><div class="empty-state">
+      <div class="ei">🛒</div>
+      <h3>Your cart is empty</h3>
+      <p>Add some dishes from our menu first</p>
+      <button class="btn-gold" style="padding:12px 32px" onclick="go('menu')">Browse Menu</button>
+    </div></div>`;
+    return;
+  }
+  const total    = cart.reduce((s, c) => s + c.price * c.qty, 0);
+  const totalQty = cart.reduce((s, c) => s + c.qty, 0);
+  wrap.innerHTML = `<div class="co-body">
+    <div class="co-card">
+      <h3>Order Summary</h3>
+      ${cart.map(item => `
+        <div class="co-item">
+          <div class="co-info">
+            <strong>${item.name}</strong>
+            <span>Rs. ${item.price} each</span>
+          </div>
+          <div class="qty-ctrl">
+            <button class="qb" onclick="changeQty(${item.id},-1)">−</button>
+            <span class="qn">${item.qty}</span>
+            <button class="qb" onclick="changeQty(${item.id},1)">+</button>
+          </div>
+          <button class="del-btn" onclick="removeFromCart(${item.id})">🗑️</button>
+          <span class="co-price">Rs. ${item.price * item.qty}</span>
+        </div>`).join('')}
+      <div class="co-sum">
+        <div class="co-row"><span class="l">Items</span><span class="r">${totalQty}</span></div>
+        <div class="co-row total"><span class="l">Total</span><span class="r">Rs. ${total}</span></div>
+      </div>
+    </div>
+    <div class="co-card">
+      <h3>Your Details</h3>
+      <div class="f-g">
+        <label class="f-label">Name <span class="req">*</span></label>
+        <input id="o-name" class="f-input" type="text" placeholder="Your name">
+      </div>
+      <div class="f-g">
+        <label class="f-label">Phone <span class="req">*</span></label>
+        <input id="o-phone" class="f-input" type="tel" placeholder="+91 XXXXX XXXXX">
+      </div>
+      <div class="f-g">
+        <label class="f-label">Email</label>
+        <input id="o-email" class="f-input" type="email" placeholder="your@email.com">
+      </div>
+      <button class="pay-btn" id="pay-btn" onclick="placeOrder(${total})">💳 Pay Rs. ${total}</button>
+      <p class="secure-txt">🔒 Secured by Stripe. You'll be redirected to complete payment.</p>
+    </div>
+  </div>`;
+}
+
+// ─── SUBMIT BOOKING (POST to API) ────────────────────────────
+async function submitBooking() {
+  const name    = document.getElementById('b-name').value.trim();
+  const phone   = document.getElementById('b-phone').value.trim();
+  const email   = document.getElementById('b-email').value.trim();
+  const date    = document.getElementById('b-date').value;
+  const time    = document.getElementById('b-time').value;
+  const guests  = document.getElementById('b-guests').value;
+  const special = document.getElementById('b-special').value.trim();
+
+  if (!name || !phone || !date || !time || !guests) {
+    toast('⚠️ Please fill all required fields'); return;
+  }
+
+  const btn = document.getElementById('book-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Confirming...';
+
+  try {
+    const res  = await fetch(API + '/api/bookings', {
+      method : 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body   : JSON.stringify({ name, phone, email, date, time, guests, special })
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      ['b-name','b-phone','b-email','b-special'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('b-date').value = '';
+      document.getElementById('b-time').value = '';
+      document.getElementById('b-guests').value = '';
+      showModal('Booking Confirmed! 🎉',
+        `Thank you ${name}! Your table for ${guests} on ${date} at ${time} has been reserved. ${data.message}`);
+    } else {
+      toast('❌ ' + (data.error || 'Something went wrong'));
+    }
+  } catch(e) {
+    toast('❌ Could not connect to server. Is it running?');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '📅 Confirm Booking';
+  }
+}
+
+// ─── PLACE ORDER (POST to API) ────────────────────────────────
+async function placeOrder(total) {
+  const name  = document.getElementById('o-name')?.value.trim();
+  const phone = document.getElementById('o-phone')?.value.trim();
+  const email = document.getElementById('o-email')?.value.trim();
+  if (!name || !phone) { toast('⚠️ Please enter your name and phone'); return; }
+
+  const btn = document.getElementById('pay-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Processing...';
+
+  try {
+    const res  = await fetch(API + '/api/orders', {
+      method : 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body   : JSON.stringify({
+        name, phone, email,
+        items : cart.map(c => `${c.name} ×${c.qty}`).join(', '),
+        total
+      })
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      cart = []; saveCart();
+      showModal('Order Placed! 🎉',
+        `Thank you ${name}! Your order of Rs. ${total} has been received. ${data.message}`);
+    } else {
+      toast('❌ ' + (data.error || 'Something went wrong'));
+    }
+  } catch(e) {
+    toast('❌ Could not connect to server.');
+  } finally {
+    if (btn) { btn.disabled = false; btn.innerHTML = `💳 Pay Rs. ${total}`; }
+  }
+}
+
+// ─── MODAL ────────────────────────────────────────────────────
+function showModal(t, d) {
+  document.getElementById('modal-title').textContent = t;
+  document.getElementById('modal-desc').textContent  = d;
+  document.getElementById('modal-ov').classList.add('open');
+}
+function closeModal() { document.getElementById('modal-ov').classList.remove('open'); go('home'); }
+
+// ─── TOAST ────────────────────────────────────────────────────
+let _tt;
+function toast(msg) {
+  clearTimeout(_tt);
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  _tt = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+// ─── ADMIN ────────────────────────────────────────────────────
+let curTab = 'bookings';
+async function openAdmin() {
+  document.getElementById('admin-ov').classList.add('open');
+  await aTab('bookings', document.getElementById('tab-b'));
+}
+function closeAdmin() { document.getElementById('admin-ov').classList.remove('open'); }
+
+async function aTab(tab, el) {
+  curTab = tab;
+  document.querySelectorAll('.a-tab').forEach(t => t.classList.remove('active'));
+  if (el) el.classList.add('active');
+  await renderAdmin();
+}
+
+async function renderAdmin() {
+  const body = document.getElementById('adm-body');
+  body.innerHTML = '<p style="text-align:center;padding:30px;color:var(--t-muted)">Loading...</p>';
+
+  try {
+    // Load stats
+    const sRes  = await fetch(API + '/api/stats');
+    const stats = await sRes.json();
+
+    // Load current tab data
+    const dRes = await fetch(API + '/api/' + curTab);
+    const data = await dRes.json();
+
+    let statsHTML = `<div class="a-stats">
+      <div class="stat-card"><div class="sv">${stats.bookings}</div><div class="sl">Total Bookings</div></div>
+      <div class="stat-card"><div class="sv">${stats.orders}</div><div class="sl">Total Orders</div></div>
+      <div class="stat-card"><div class="sv">${stats.messages}</div><div class="sl">Messages</div></div>
+      <div class="stat-card"><div class="sv">₹${stats.revenue}</div><div class="sl">Total Revenue</div></div>
+    </div>`;
+
+    if (!data.length) {
+      body.innerHTML = statsHTML + `<div class="empty-adm"><div style="font-size:2rem;margin-bottom:10px">📭</div><p>No ${curTab} yet</p></div>`;
+      return;
+    }
+
+    let tableHTML = '';
+    if (curTab === 'bookings') {
+      tableHTML = `<div style="overflow-x:auto"><table class="a-table">
+        <thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Email</th><th>Date</th><th>Time</th><th>Guests</th><th>Special Requests</th><th>Status</th><th>Received At</th></tr></thead>
+        <tbody>${data.map((b, i) => `<tr>
+          <td>${i+1}</td>
+          <td><strong>${b.name}</strong></td>
+          <td>${b.phone}</td>
+          <td>${b.email || '—'}</td>
+          <td>${b.date}</td>
+          <td>${b.time}</td>
+          <td>${b.guests}</td>
+          <td style="max-width:140px;font-size:.8rem">${b.special || '—'}</td>
+          <td><span class="${b.status==='Done'?'b-done':'b-new'}">${b.status}</span></td>
+          <td style="white-space:nowrap;font-size:.78rem">${b.created_at}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>`;
+    } else if (curTab === 'orders') {
+      tableHTML = `<div style="overflow-x:auto"><table class="a-table">
+        <thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Items Ordered</th><th>Total</th><th>Status</th><th>Ordered At</th></tr></thead>
+        <tbody>${data.map((o, i) => `<tr>
+          <td>${i+1}</td>
+          <td><strong>${o.name}</strong></td>
+          <td>${o.phone}</td>
+          <td style="max-width:220px;font-size:.8rem">${o.items}</td>
+          <td style="color:var(--gold);font-weight:600">Rs. ${o.total}</td>
+          <td><span class="${o.status==='Done'?'b-done':'b-new'}">${o.status}</span></td>
+          <td style="white-space:nowrap;font-size:.78rem">${o.created_at}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>`;
+    } else {
+      tableHTML = `<div style="overflow-x:auto"><table class="a-table">
+        <thead><tr><th>#</th><th>Name</th><th>Message</th><th>Status</th><th>Sent At</th></tr></thead>
+        <tbody>${data.map((m, i) => `<tr>
+          <td>${i+1}</td>
+          <td><strong>${m.name}</strong></td>
+          <td style="max-width:320px">${m.message}</td>
+          <td><span class="${m.status==='Done'?'b-done':'b-new'}">${m.status}</span></td>
+          <td style="white-space:nowrap;font-size:.78rem">${m.created_at}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>`;
+    }
+
+    body.innerHTML = statsHTML + tableHTML;
+
+  } catch(e) {
+    body.innerHTML = `<div class="empty-adm"><p>❌ Cannot reach server API. Make sure <code>node server.js</code> is running.</p></div>`;
+  }
+}
+
+// ─── INIT ────────────────────────────────────────────────────
+updateCount();
+loadHome();
+renderMenuPage();
+</script>
+</body>
+</html>
