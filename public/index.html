@@ -219,23 +219,93 @@ footer p{font-size:.83rem;color:var(--t-muted);line-height:1.8;font-weight:300}
 .footer-line{border:none;border-top:1px solid var(--border);margin:22px 0}
 .footer-copy{font-size:.76rem;color:rgba(255,255,255,.18)}
 
+/* ── MOBILE MENU BUTTON ── */
+.mob-menu-btn{display:none;background:none;border:none;color:var(--white);font-size:1.5rem;cursor:pointer;padding:6px;line-height:1}
+.mob-nav{display:none;position:fixed;inset:0;z-index:999;background:rgba(24,13,3,0.98);flex-direction:column;align-items:center;justify-content:center;gap:28px}
+.mob-nav.open{display:flex}
+.mob-nav-link{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--white);cursor:pointer;background:none;border:none;transition:color .2s}
+.mob-nav-link:hover{color:var(--gold)}
+.mob-close{position:absolute;top:24px;right:24px;background:none;border:none;color:var(--white);font-size:1.8rem;cursor:pointer}
+
 /* ── RESPONSIVE ── */
 @media(max-width:900px){
   .cards-grid{grid-template-columns:repeat(2,1fr)}
   .co-body,.contact-body{grid-template-columns:1fr}
   .a-stats{grid-template-columns:repeat(2,1fr)}
+  .checkout-body{grid-template-columns:1fr}
 }
-@media(max-width:600px){
-  .navbar{padding:0 18px}
+@media(max-width:700px){
+  /* NAV */
+  .navbar{padding:0 16px;height:60px}
   .nav-center{display:none}
-  .hero-content{padding:68px 24px 0}
-  .home-section,.cards-section{padding-left:16px;padding-right:16px}
+  .btn-gold{display:none}
+  .mob-menu-btn{display:block}
+
+  /* HERO */
+  .hero-content{padding:60px 20px 0;max-width:100%}
+  .hero-title{font-size:2.2rem}
+  .hero-gold{font-size:2.2rem}
+  .hero-welcome{font-size:1.2rem}
+  .hero-desc{font-size:.88rem;margin:14px 0 24px}
+  .hero-btns{gap:10px}
+  .btn-hp,.btn-ho{padding:11px 18px;font-size:.82rem}
+
+  /* SECTIONS */
+  .home-section{padding:40px 16px}
+  .sec-title{font-size:1.7rem}
+  .cards-section{padding:24px 12px 40px}
   .cards-grid{grid-template-columns:1fr}
-  .form-card{padding:24px 18px}
+
+  /* MENU */
+  #menu{padding-top:60px}
+  .menu-top{padding:30px 16px 0}
+  .cat-row{padding-bottom:20px;gap:7px}
+  .cat-pill{padding:6px 14px;font-size:.78rem}
+
+  /* BOOK */
+  #book{padding-top:60px}
+  .page-top{padding:36px 16px 28px}
+  .page-top h1{font-size:1.8rem}
+  .form-wrap{padding:10px 12px 50px}
+  .form-card{padding:22px 16px}
   .f-row{grid-template-columns:1fr}
-  .co-body{padding:0 14px 60px}
-  .contact-body{padding:30px 16px 60px}
-  .a-stats{grid-template-columns:repeat(2,1fr)}
+
+  /* CHECKOUT */
+  #checkout{padding-top:60px}
+  .co-top{padding:30px 16px 24px}
+  .co-top h1{font-size:2rem}
+  .co-body{grid-template-columns:1fr;padding:0 12px 50px;gap:16px}
+  .co-card{padding:20px 16px}
+  .co-item{flex-wrap:wrap;gap:8px}
+  .qty-ctrl{margin:0 4px}
+
+  /* CONTACT */
+  #contact{padding-top:60px}
+  .contact-body{padding:28px 12px 50px;grid-template-columns:1fr;gap:20px}
+  .map-box{height:280px}
+
+  /* ADMIN */
+  .admin-box{width:98%;max-height:90vh;border-radius:10px}
+  .adm-head{padding:16px 14px}
+  .adm-tabs{padding:12px 14px;gap:6px}
+  .a-tab{padding:6px 12px;font-size:.75rem}
+  #booking-filters{padding:10px 14px}
+  #booking-filters .a-tab{font-size:.7rem;padding:5px 9px}
+  .adm-body{padding:14px 10px 20px}
+  .a-stats{grid-template-columns:repeat(2,1fr);gap:10px}
+  .stat-card{padding:12px 8px}
+  .stat-card .sv{font-size:1.4rem}
+  .a-table{font-size:.72rem}
+  .a-table th,.a-table td{padding:8px 8px}
+
+  /* FOOTER */
+  footer{padding:36px 20px 24px}
+}
+@media(max-width:380px){
+  .hero-title{font-size:1.8rem}
+  .hero-gold{font-size:1.8rem}
+  .cards-grid{grid-template-columns:1fr}
+  .a-stats{grid-template-columns:1fr 1fr}
 }
 </style>
 </head>
@@ -255,8 +325,20 @@ footer p{font-size:.83rem;color:var(--t-muted);line-height:1.8;font-weight:300}
       🛒 <span class="cart-badge" id="cart-count">0</span>
     </button>
     <button class="btn-gold" onclick="go('book')">📅 Book a Table</button>
+    <button class="mob-menu-btn" onclick="openMobNav()">☰</button>
   </div>
 </nav>
+
+<!-- MOBILE NAV OVERLAY -->
+<div class="mob-nav" id="mob-nav">
+  <button class="mob-close" onclick="closeMobNav()">✕</button>
+  <button class="mob-nav-link" onclick="go('home');closeMobNav()">Home</button>
+  <button class="mob-nav-link" onclick="go('menu');closeMobNav()">Menu</button>
+  <button class="mob-nav-link" onclick="go('book');closeMobNav()">Book Table</button>
+  <button class="mob-nav-link" onclick="go('contact');closeMobNav()">Contact</button>
+  <button onclick="go('book');closeMobNav()" style="background:var(--gold);color:#fff;border:none;padding:13px 36px;border-radius:50px;font-family:'Inter',sans-serif;font-size:1rem;font-weight:600;cursor:pointer;margin-top:10px;">📅 Book a Table</button>
+  <button onclick="go('checkout');closeMobNav()" style="background:transparent;color:var(--white);border:1.5px solid rgba(255,255,255,.3);padding:11px 28px;border-radius:50px;font-family:'Inter',sans-serif;font-size:.95rem;cursor:pointer;">🛒 Cart (<span id="mob-cart-count">0</span>)</button>
+</div>
 
 <!-- HOME -->
 <div id="home" class="page active">
@@ -488,6 +570,9 @@ footer p{font-size:.83rem;color:var(--t-muted);line-height:1.8;font-weight:300}
 // ─── CONFIG ──────────────────────────────────────────────────
 const API = ''; // same origin — Express serves both
 
+function openMobNav(){ document.getElementById('mob-nav').classList.add('open'); }
+function closeMobNav(){ document.getElementById('mob-nav').classList.remove('open'); }
+
 // ─── CART (localStorage) ────────────────────────────────────
 let cart = JSON.parse(localStorage.getItem('mm_cart') || '[]');
 const saveCart = () => { localStorage.setItem('mm_cart', JSON.stringify(cart)); updateCount(); };
@@ -508,7 +593,10 @@ function changeQty(id, d) {
   else { saveCart(); renderCheckout(); }
 }
 function updateCount() {
-  document.getElementById('cart-count').textContent = cart.reduce((s, c) => s + c.qty, 0);
+  const n = cart.reduce((s, c) => s + c.qty, 0);
+  document.getElementById('cart-count').textContent = n;
+  const mob = document.getElementById('mob-cart-count');
+  if (mob) mob.textContent = n;
 }
 
 // ─── NAVIGATION ──────────────────────────────────────────────
