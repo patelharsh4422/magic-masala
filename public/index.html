@@ -249,8 +249,8 @@ textarea.finp{resize:vertical;min-height:86px}
 #bfil 
 
 /* SECRET DOT */
-.sdot{position:fixed;bottom:24px;left:24px;background:rgba(200,150,10,.15);border:1px solid rgba(200,150,10,.35);color:rgba(200,150,10,.7);cursor:pointer;z-index:9999;transition:all .25s;padding:7px 13px;border-radius:50px;font-family:"Inter",sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.06em;backdrop-filter:blur(4px)}
-.sdot:hover{background:rgba(200,150,10,.28);border-color:rgba(200,150,10,.6);color:var(--gold)}
+.sdot{position:fixed;bottom:24px;left:24px;background:transparent;border:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.12);cursor:pointer;z-index:9999;transition:all .3s;padding:7px 13px;border-radius:50px;font-family:"Inter",sans-serif;font-size:.72rem;font-weight:500;letter-spacing:.06em}
+.sdot:hover{background:rgba(200,150,10,.12);border-color:rgba(200,150,10,.3);color:rgba(200,150,10,.6)}
 
 /* FABs */
 .hfab{position:fixed;bottom:80px;right:18px;width:44px;height:44px;background:rgba(28,16,5,.88);border:1px solid rgba(200,150,10,.32);color:var(--gold);border-radius:50%;cursor:pointer;z-index:498;box-shadow:0 4px 16px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;transition:all .25s;opacity:0;pointer-events:none;backdrop-filter:blur(4px)}
@@ -653,19 +653,9 @@ function closeMod(){document.getElementById('mod-ov').classList.remove('open');g
 // TOAST
 let _tt;
 function showToast(msg){clearTimeout(_tt);const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');_tt=setTimeout(()=>el.classList.remove('show'),2800)}
-
-// ADMIN
-  const body=document.getElementById('a-body');
-  body.innerHTML='<p style="text-align:center;padding:28px;color:var(--tm)">Loading...</p>';
-  try{
-    const[sr,dr]=await Promise.all([fetch(API+'/api/stats'),fetch(API+'/api/'+curTab)]);
-    const st=await sr.json();let data=await dr.json();
-    const sH=`<div class="a-stats"><div class="scard"><div class="sv">${st.bookings}</div><div class="sl">Total Bookings</div></div><div class="scard"><div class="sv">${st.orders}</div><div class="sl">Total Orders</div></div><div class="scard"><div class="sv">${st.messages}</div><div class="sl">Messages</div></div><div class="scard"><div class="sv">Rs.${st.revenue}</div><div class="sl">Revenue</div></div></div>`;
-    if(curTab==='bookings'){
-      const lb={all:'All Bookings',today:'Today',week:'This Week',month:'This Month',recent:'Most Recent'};
-      if(!fl.length){body.innerHTML=sH+`<div class="empty-a">No bookings for "${lb[bf]}"</div>`;return}
-    }else if(curTab==='orders'){
-      if(!data.length){body.innerHTML=sH+`<div class="empty-a">No orders yet</div>`;return}
-    }else{
-      if(!data.length){body.innerHTML=sH+`<div class="empty-a">No messages yet</div>`;return}
-      body.innerHTML=sH+`<div style="overflow-x:auto"><table class="atable"><thead><tr><th>#</th><th>Name</th><th>Message</th><th>Status</th><th>Sent At</th></tr></thead><tbody>${data.map((m,i)=>`<tr><td>${i+1}</td><td><strong>${m.name}</strong></td>
+updCnt();
+loadHome();
+renderMenuPage();
+</script>
+</body>
+</html>
