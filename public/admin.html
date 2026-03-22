@@ -164,7 +164,7 @@ html,body{height:100%;background:var(--bg);color:var(--w);font-family:'Inter',sa
     <div class="captcha-wrap">
       <label class="captcha-label">Enter the code shown below <span style="color:#e05252">*</span></label>
       <div class="captcha-row">
-        <canvas class="captcha-canvas" id="captcha-canvas" width="160" height="48"></canvas>
+        <canvas class="captcha-canvas" id="captcha-canvas" width="180" height="52"></canvas>
         <button type="button" class="captcha-refresh" onclick="generateCaptcha()" title="Refresh code">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
         </button>
@@ -289,14 +289,17 @@ function generateCaptcha() {
   // Clear
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Background
-  ctx.fillStyle = '#111';
+  // Background gradient
+  const grad = ctx.createLinearGradient(0,0,canvas.width,0);
+  grad.addColorStop(0, '#0d0d0d');
+  grad.addColorStop(1, '#1a1a1a');
+  ctx.fillStyle = grad;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   // Noise dots
   for (let i = 0; i < 60; i++) {
     ctx.beginPath();
-    ctx.arc(Math.random()*160, Math.random()*48, 1, 0, Math.PI*2);
+    ctx.arc(Math.random()*180, Math.random()*52, 1, 0, Math.PI*2);
     ctx.fillStyle = `rgba(${100+Math.random()*100},${100+Math.random()*100},${100+Math.random()*100},0.4)`;
     ctx.fill();
   }
@@ -304,8 +307,8 @@ function generateCaptcha() {
   // Noise lines
   for (let i = 0; i < 4; i++) {
     ctx.beginPath();
-    ctx.moveTo(Math.random()*160, Math.random()*48);
-    ctx.lineTo(Math.random()*160, Math.random()*48);
+    ctx.moveTo(Math.random()*180, Math.random()*52);
+    ctx.lineTo(Math.random()*180, Math.random()*52);
     ctx.strokeStyle = `rgba(150,150,150,0.25)`;
     ctx.lineWidth = 1;
     ctx.stroke();
@@ -317,8 +320,8 @@ function generateCaptcha() {
   ctx.textBaseline = 'middle';
   for (let i = 0; i < captchaCode.length; i++) {
     ctx.save();
-    const x = 18 + i * 28;
-    const y = 24 + (Math.random() * 6 - 3);
+    const x = 20 + i * 30;
+    const y = 26 + (Math.random() * 5 - 2.5);
     const angle = (Math.random() - 0.5) * 0.4;
     ctx.translate(x, y);
     ctx.rotate(angle);
