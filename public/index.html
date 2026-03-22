@@ -220,12 +220,31 @@ footer p{font-size:.83rem;color:var(--t-muted);line-height:1.8;font-weight:300}
 .footer-copy{font-size:.76rem;color:rgba(255,255,255,.18)}
 
 /* ── MOBILE MENU BUTTON ── */
-.mob-menu-btn{display:none;background:none;border:none;color:var(--white);font-size:1.5rem;cursor:pointer;padding:6px;line-height:1}
-.mob-nav{display:none;position:fixed;inset:0;z-index:999;background:rgba(24,13,3,0.98);flex-direction:column;align-items:center;justify-content:center;gap:28px}
-.mob-nav.open{display:flex}
-.mob-nav-link{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--white);cursor:pointer;background:none;border:none;transition:color .2s}
-.mob-nav-link:hover{color:var(--gold)}
-.mob-close{position:absolute;top:24px;right:24px;background:none;border:none;color:var(--white);font-size:1.8rem;cursor:pointer}
+.mob-menu-btn{display:none;background:none;border:none;color:var(--white);font-size:1.6rem;cursor:pointer;padding:6px 4px;line-height:1;letter-spacing:2px}
+
+/* ── IMPROVED SIDEBAR MOBILE NAV ── */
+.mob-nav-overlay{display:none;position:fixed;inset:0;z-index:1998;background:rgba(0,0,0,0.55);backdrop-filter:blur(2px)}
+.mob-nav-overlay.open{display:block}
+.mob-nav{position:fixed;top:0;left:-100%;width:80%;max-width:300px;height:100vh;z-index:1999;background:var(--bg);border-right:1px solid rgba(200,150,10,.2);display:flex;flex-direction:column;transition:left .32s cubic-bezier(.4,0,.2,1);padding:0;overflow-y:auto}
+.mob-nav.open{left:0}
+.mob-nav-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--border)}
+.mob-nav-logo{font-family:'Dancing Script',cursive;font-size:1.4rem;color:var(--gold)}
+.mob-close{background:var(--bg-input);border:1px solid var(--border);color:var(--white);width:34px;height:34px;border-radius:50%;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.mob-close:hover{background:var(--gold);border-color:var(--gold)}
+.mob-nav-links{display:flex;flex-direction:column;padding:20px 0;flex:1}
+.mob-nav-link{font-family:'Inter',sans-serif;font-size:1rem;font-weight:500;color:var(--t-light);cursor:pointer;background:none;border:none;text-align:left;padding:15px 24px;transition:all .2s;border-left:3px solid transparent;display:flex;align-items:center;gap:12px}
+.mob-nav-link:hover,.mob-nav-link.active{color:var(--gold);background:rgba(200,150,10,.07);border-left-color:var(--gold)}
+.mob-nav-divider{height:1px;background:var(--border);margin:10px 20px}
+.mob-nav-bottom{padding:20px;display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--border)}
+
+/* ── HOME BUTTON (scroll to top) ── */
+.home-fab{position:fixed;bottom:76px;right:20px;width:46px;height:46px;background:var(--gold);color:#fff;border:none;border-radius:50%;font-size:1.2rem;cursor:pointer;z-index:500;box-shadow:0 4px 16px rgba(200,150,10,.45);display:flex;align-items:center;justify-content:center;transition:all .25s;opacity:0;pointer-events:none}
+.home-fab.visible{opacity:1;pointer-events:all}
+.home-fab:hover{background:#d9a50e;transform:scale(1.08)}
+
+/* ── WHATSAPP BUTTON ── */
+.wa-fab{position:fixed;bottom:20px;right:20px;width:52px;height:52px;background:#25D366;color:#fff;border:none;border-radius:50%;font-size:1.5rem;cursor:pointer;z-index:500;box-shadow:0 4px 18px rgba(37,211,102,.5);display:flex;align-items:center;justify-content:center;transition:all .25s;text-decoration:none}
+.wa-fab:hover{background:#1ebe5d;transform:scale(1.1)}
 
 /* ── RESPONSIVE ── */
 @media(max-width:900px){
@@ -239,7 +258,7 @@ footer p{font-size:.83rem;color:var(--t-muted);line-height:1.8;font-weight:300}
   .navbar{padding:0 16px;height:60px}
   .nav-center{display:none}
   .btn-gold{display:none}
-  .mob-menu-btn{display:block}
+  .mob-menu-btn{display:flex;align-items:center;justify-content:center}
 
   /* HERO */
   .hero-content{padding:60px 20px 0;max-width:100%}
@@ -329,16 +348,34 @@ footer p{font-size:.83rem;color:var(--t-muted);line-height:1.8;font-weight:300}
   </div>
 </nav>
 
-<!-- MOBILE NAV OVERLAY -->
+<!-- MOBILE NAV OVERLAY (backdrop) -->
+<div class="mob-nav-overlay" id="mob-nav-overlay" onclick="closeMobNav()"></div>
+
+<!-- IMPROVED SIDEBAR MOBILE NAV -->
 <div class="mob-nav" id="mob-nav">
-  <button class="mob-close" onclick="closeMobNav()">✕</button>
-  <button class="mob-nav-link" onclick="go('home');closeMobNav()">Home</button>
-  <button class="mob-nav-link" onclick="go('menu');closeMobNav()">Menu</button>
-  <button class="mob-nav-link" onclick="go('book');closeMobNav()">Book Table</button>
-  <button class="mob-nav-link" onclick="go('contact');closeMobNav()">Contact</button>
-  <button onclick="go('book');closeMobNav()" style="background:var(--gold);color:#fff;border:none;padding:13px 36px;border-radius:50px;font-family:'Inter',sans-serif;font-size:1rem;font-weight:600;cursor:pointer;margin-top:10px;">📅 Book a Table</button>
-  <button onclick="go('checkout');closeMobNav()" style="background:transparent;color:var(--white);border:1.5px solid rgba(255,255,255,.3);padding:11px 28px;border-radius:50px;font-family:'Inter',sans-serif;font-size:.95rem;cursor:pointer;">🛒 Cart (<span id="mob-cart-count">0</span>)</button>
+  <div class="mob-nav-head">
+    <span class="mob-nav-logo">Magic Masala</span>
+    <button class="mob-close" onclick="closeMobNav()">✕</button>
+  </div>
+  <div class="mob-nav-links">
+    <button class="mob-nav-link" id="mnl-home"    onclick="go('home');closeMobNav()">🏠 Home</button>
+    <button class="mob-nav-link" id="mnl-menu"    onclick="go('menu');closeMobNav()">🍽️ Menu</button>
+    <button class="mob-nav-link" id="mnl-book"    onclick="go('book');closeMobNav()">📅 Book Table</button>
+    <button class="mob-nav-link" id="mnl-contact" onclick="go('contact');closeMobNav()">📞 Contact</button>
+    <button class="mob-nav-link"                  onclick="go('checkout');closeMobNav()">🛒 Cart (<span id="mob-cart-count">0</span>)</button>
+  </div>
+  <div class="mob-nav-divider"></div>
+  <div class="mob-nav-bottom">
+    <button onclick="go('book');closeMobNav()" style="background:var(--gold);color:#fff;border:none;padding:13px;border-radius:50px;font-family:'Inter',sans-serif;font-size:.95rem;font-weight:600;cursor:pointer;width:100%;">📅 Book a Table</button>
+    <a href="https://wa.me/919327815264" target="_blank" style="background:#25D366;color:#fff;border:none;padding:12px;border-radius:50px;font-family:'Inter',sans-serif;font-size:.9rem;font-weight:600;cursor:pointer;width:100%;text-align:center;text-decoration:none;display:block;">💬 Chat on WhatsApp</a>
+  </div>
 </div>
+
+<!-- HOME FAB BUTTON (go to homepage) -->
+<button class="home-fab" id="home-fab" onclick="go('home')" title="Go to Home">🏠</button>
+
+<!-- WHATSAPP FAB -->
+<a class="wa-fab" href="https://wa.me/919327815264" target="_blank" title="Chat on WhatsApp">💬</a>
 
 <!-- HOME -->
 <div id="home" class="page active">
@@ -570,8 +607,72 @@ footer p{font-size:.83rem;color:var(--t-muted);line-height:1.8;font-weight:300}
 // ─── CONFIG ──────────────────────────────────────────────────
 const API = ''; // same origin — Express serves both
 
-function openMobNav(){ document.getElementById('mob-nav').classList.add('open'); }
-function closeMobNav(){ document.getElementById('mob-nav').classList.remove('open'); }
+function openMobNav(){
+  document.getElementById('mob-nav').classList.add('open');
+  document.getElementById('mob-nav-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeMobNav(){
+  document.getElementById('mob-nav').classList.remove('open');
+  document.getElementById('mob-nav-overlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+// ─── NAVIGATION with BACK BUTTON SUPPORT ─────────────────────
+const PAGES = ['home','menu','book','checkout','contact'];
+
+function go(id) {
+  PAGES.forEach(p => document.getElementById(p).classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+
+  // Update desktop nav active state
+  ['home','menu','book','contact'].forEach(p => {
+    const el = document.getElementById('nl-' + p);
+    if (el) el.classList.toggle('active', p === id);
+  });
+
+  // Update mobile nav active state
+  ['home','menu','book','contact'].forEach(p => {
+    const el = document.getElementById('mnl-' + p);
+    if (el) el.classList.toggle('active', p === id);
+  });
+
+  // Push to browser history so back button works
+  if (history.state?.page !== id) {
+    history.pushState({ page: id }, '', '#' + id);
+  }
+
+  window.scrollTo(0, 0);
+
+  // Show/hide home FAB button
+  const fab = document.getElementById('home-fab');
+  if (fab) fab.classList.toggle('visible', id !== 'home');
+
+  if (id === 'checkout') renderCheckout();
+  if (id === 'menu') renderMenuPage();
+}
+
+// Handle browser back/forward buttons
+window.addEventListener('popstate', (e) => {
+  const page = e.state?.page || 'home';
+  // Call go() but without pushing to history again
+  PAGES.forEach(p => document.getElementById(p).classList.remove('active'));
+  document.getElementById(page).classList.add('active');
+  ['home','menu','book','contact'].forEach(p => {
+    const el = document.getElementById('nl-' + p);
+    if (el) el.classList.toggle('active', p === page);
+    const mel = document.getElementById('mnl-' + p);
+    if (mel) mel.classList.toggle('active', p === page);
+  });
+  window.scrollTo(0, 0);
+  const fab = document.getElementById('home-fab');
+  if (fab) fab.classList.toggle('visible', page !== 'home');
+  if (page === 'checkout') renderCheckout();
+  if (page === 'menu') renderMenuPage();
+});
+
+// Set initial history state
+history.replaceState({ page: 'home' }, '', '#home');
 
 // ─── CART (localStorage) ────────────────────────────────────
 let cart = JSON.parse(localStorage.getItem('mm_cart') || '[]');
@@ -597,20 +698,6 @@ function updateCount() {
   document.getElementById('cart-count').textContent = n;
   const mob = document.getElementById('mob-cart-count');
   if (mob) mob.textContent = n;
-}
-
-// ─── NAVIGATION ──────────────────────────────────────────────
-const PAGES = ['home','menu','book','checkout','contact'];
-function go(id) {
-  PAGES.forEach(p => document.getElementById(p).classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  ['home','menu','book','contact'].forEach(p => {
-    const el = document.getElementById('nl-' + p);
-    if (el) el.classList.toggle('active', p === id);
-  });
-  window.scrollTo(0, 0);
-  if (id === 'checkout') renderCheckout();
-  if (id === 'menu') renderMenuPage();
 }
 
 // ─── DISH CARD HTML ──────────────────────────────────────────
