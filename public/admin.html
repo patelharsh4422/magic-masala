@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magic Masala — Admin Dashboard</title>
+<script src="/socket.io/socket.io.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f0a04;--bg2:#160c03;--bg3:#1e1106;--bg4:#251508;
+  --bgi:#2a1a08;--gold:#c8960a;--gold2:#d9a50e;
+  --w:#fff;--tl:rgba(255,255,255,.88);--tm:rgba(255,255,255,.44);
+  --bd:rgba(255,255,255,.07);--green:#22c55e;--red:#ef4444;--blue:#3b82f6;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg);color:var(--w);font-family:'Inter',sans-serif;overflow-x:hidden}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px}
+
+/* ── LOGIN ── */
+.login-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999;flex-direction:column;gap:0}
+.login-screen.hide{display:none}
+.login-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(200,150,10,.12) 0%,transparent 65%)}
+.login-card{position:relative;background:var(--bg3);border:1px solid rgba(200,150,10,.25);border-radius:20px;padding:44px 40px;width:90%;max-width:420px;box-shadow:0 32px 80px rgba(0,0,0,.8)}
+.login-logo{font-family:'Playfair Display',serif;color:var(--gold);font-size:1.55rem;text-align:center;display:block;margin-bottom:5px}
+.login-sub{text-align:center;font-size:.83rem;color:var(--tm);margin-bottom:30px}
+.login-icon{text-align:center;margin-bottom:18px}
+.login-icon svg{width:46px;height:46px;color:var(--gold)}
+.l-group{margin-bottom:18px}
+.l-label{display:block;font-size:.82rem;font-weight:500;color:var(--tl);margin-bottom:7px}
+.l-inp{width:100%;background:var(--bgi);border:1px solid rgba(255,255,255,.07);color:#fff;padding:12px 14px;border-radius:9px;font-family:'Inter',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s}
+.l-inp:focus{border-color:rgba(200,150,10,.5)}
+.l-inp::placeholder{color:rgba(255,255,255,.2)}
+.l-err{display:none;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.22);color:#fca5a5;padding:9px 13px;border-radius:8px;font-size:.82rem;margin-bottom:14px;text-align:center}
+
+/* HUMAN CHECKBOX */
+.human-check{display:flex;align-items:center;gap:12px;background:#1a1a1a;border:1px solid #333;border-radius:6px;padding:13px 14px;cursor:pointer;user-select:none;margin-bottom:8px;transition:border-color .2s}
+.human-check:hover{border-color:#555}
+.human-check.checked{border-color:rgba(74,144,217,.5);background:rgba(74,144,217,.05)}
+.hc-box{width:22px;height:22px;border:2px solid #666;border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .25s;background:#000}
+.human-check.checked .hc-box{background:#4A90D9;border-color:#4A90D9}
+.hc-label{flex:1;font-size:.88rem;color:var(--tl);font-family:'Inter',sans-serif}
+.hc-logo{display:flex;flex-direction:column;align-items:center;gap:2px}
+.hc-err{display:none;color:#fca5a5;font-size:.78rem;margin-bottom:10px;padding-left:4px}
+.l-btn{width:100%;background:var(--gold);color:#fff;border:none;padding:13px;border-radius:10px;font-family:'Inter',sans-serif;font-size:.95rem;font-weight:600;cursor:pointer;transition:all .2s;margin-top:4px}
+.l-btn:hover{background:var(--gold2);box-shadow:0 4px 20px rgba(200,150,10,.35)}
+
+/* ── MAIN LAYOUT ── */
+.app{display:none;height:100vh;flex-direction:column}
+.app.show{display:flex}
+
+/* TOPBAR */
+.topbar{height:60px;background:var(--bg3);border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;padding:0 28px;flex-shrink:0}
+.topbar-left{display:flex;align-items:center;gap:14px}
+.topbar-logo{font-family:'Playfair Display',serif;color:var(--gold);font-size:1.25rem}
+.topbar-badge{background:var(--bg4);border:1px solid var(--bd);border-radius:6px;padding:3px 10px;font-size:.75rem;color:var(--tm)}
+.live-indicator{display:flex;align-items:center;gap:7px;font-size:.8rem;font-weight:500}
+.live-dot{width:9px;height:9px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;flex-shrink:0}
+.live-dot.off{background:var(--red);animation:none}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.15)}}
+.live-txt{color:var(--green)}
+.live-txt.off{color:var(--red)}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.logout-btn{background:transparent;border:1px solid var(--bd);color:var(--tm);padding:6px 14px;border-radius:7px;font-family:'Inter',sans-serif;font-size:.8rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px}
+.logout-btn:hover{border-color:var(--red);color:var(--red)}
+.logout-btn svg{width:14px;height:14px}
+.refresh-btn{background:var(--bgi);border:1px solid var(--bd);color:var(--tl);padding:6px 14px;border-radius:7px;font-family:'Inter',sans-serif;font-size:.8rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px}
+.refresh-btn:hover{background:var(--gold);border-color:var(--gold);color:#fff}
+.refresh-btn svg{width:14px;height:14px}
+.refresh-btn.spin svg{animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* BODY */
+.main{flex:1;overflow-y:auto;padding:24px 28px}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat{background:var(--bg3);border:1px solid var(--bd);border-radius:12px;padding:20px 22px;display:flex;align-items:center;gap:16px;transition:border-color .2s}
+.stat:hover{border-color:rgba(200,150,10,.2)}
+.stat-icon{width:46px;height:46px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.stat-icon svg{width:22px;height:22px}
+.si-gold{background:rgba(200,150,10,.12);color:var(--gold)}
+.si-green{background:rgba(34,197,94,.12);color:var(--green)}
+.si-blue{background:rgba(59,130,246,.12);color:var(--blue)}
+.si-purple{background:rgba(168,85,247,.12);color:#a855f7}
+.stat-val{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--w);line-height:1}
+.stat-lbl{font-size:.77rem;color:var(--tm);margin-top:4px}
+
+/* TABS */
+.tabs-row{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap}
+.tab{background:var(--bg3);border:1px solid var(--bd);color:var(--tm);padding:8px 18px;border-radius:8px;font-family:'Inter',sans-serif;font-size:.84rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:7px}
+.tab:hover{color:var(--tl);border-color:rgba(255,255,255,.14)}
+.tab.active{background:var(--gold);border-color:var(--gold);color:#fff;font-weight:600}
+.tab-badge{background:rgba(255,255,255,.2);border-radius:50px;padding:1px 7px;font-size:.72rem;font-weight:700}
+.tab.active .tab-badge{background:rgba(0,0,0,.2)}
+
+/* FILTER ROW */
+.filter-row{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap;align-items:center}
+.filter-label{font-size:.8rem;color:var(--tm);margin-right:4px}
+.fpill{background:var(--bg4);border:1px solid var(--bd);color:var(--tm);padding:5px 13px;border-radius:50px;font-family:'Inter',sans-serif;font-size:.78rem;cursor:pointer;transition:all .2s}
+.fpill:hover{color:var(--tl)}
+.fpill.active{background:rgba(200,150,10,.15);border-color:rgba(200,150,10,.4);color:var(--gold);font-weight:600}
+
+/* TABLE CARD */
+.table-card{background:var(--bg3);border:1px solid var(--bd);border-radius:12px;overflow:hidden}
+.table-card-head{padding:16px 20px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between}
+.table-card-title{font-size:.9rem;font-weight:600;color:var(--w);display:flex;align-items:center;gap:8px}
+.table-card-count{font-size:.78rem;color:var(--tm)}
+.tbl{width:100%;border-collapse:collapse;font-size:.82rem}
+.tbl th{background:var(--bg4);color:var(--gold);padding:11px 14px;text-align:left;font-weight:600;border-bottom:1px solid var(--bd);white-space:nowrap;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em}
+.tbl td{padding:11px 14px;border-bottom:1px solid var(--bd);color:var(--tl);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:rgba(200,150,10,.03)}
+.tbl tr.new-row{animation:rowIn .5s ease}
+@keyframes rowIn{from{background:rgba(200,150,10,.12)}to{background:transparent}}
+.badge-new{background:rgba(200,150,10,.15);color:var(--gold);padding:3px 10px;border-radius:50px;font-size:.7rem;font-weight:700;white-space:nowrap}
+.badge-done{background:rgba(34,197,94,.12);color:var(--green);padding:3px 10px;border-radius:50px;font-size:.7rem;font-weight:700;white-space:nowrap}
+.empty-state{text-align:center;padding:56px 20px;color:var(--tm)}
+.empty-state svg{width:44px;height:44px;color:rgba(200,150,10,.2);margin-bottom:12px}
+.empty-state p{font-size:.88rem}
+
+/* NEW BOOKING ALERT BANNER */
+.alert-banner{display:none;position:fixed;top:68px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;padding:12px 24px;border-radius:50px;font-size:.88rem;font-weight:600;z-index:999;box-shadow:0 8px 32px rgba(34,197,94,.4);animation:slideDown .4s ease;white-space:nowrap;align-items:center;gap:10px}
+.alert-banner.show{display:flex}
+@keyframes slideDown{from{transform:translateX(-50%) translateY(-20px);opacity:0}to{transform:translateX(-50%) translateY(0);opacity:1}}
+.alert-banner svg{width:18px;height:18px}
+
+/* TOAST */
+.toast{position:fixed;bottom:22px;right:20px;background:var(--bg3);border:1px solid rgba(200,150,10,.3);border-radius:10px;padding:12px 17px;font-size:.84rem;color:#fff;z-index:9999;transform:translateY(80px);opacity:0;transition:all .3s;max-width:280px;box-shadow:0 8px 28px rgba(0,0,0,.5);pointer-events:none}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* RESPONSIVE */
+@media(max-width:900px){.stats-row{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){
+  .topbar{padding:0 16px}.main{padding:16px 14px}
+  .stats-row{grid-template-columns:1fr 1fr;gap:10px}
+  .stat{padding:14px 14px;gap:11px}.stat-val{font-size:1.4rem}
+  .tbl{font-size:.76rem}.tbl th,.tbl td{padding:9px 10px}
+  .topbar-badge{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="login-screen">
+  <div class="login-bg"></div>
+  <div class="login-card">
+    <div class="login-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+    </div>
+    <span class="login-logo">Magic Masala</span>
+    <div class="login-sub">Owner Dashboard — Secure Login</div>
+    <div class="l-err" id="l-err">Wrong ID or Password. Try again.</div>
+    <div class="l-group">
+      <label class="l-label">Admin ID</label>
+      <input id="l-id" class="l-inp" type="text" placeholder="Enter admin ID" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div class="l-group">
+      <label class="l-label">Password</label>
+      <input id="l-pw" class="l-inp" type="password" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <!-- CAPTCHA -->
+    <div class="captcha-wrap">
+      <label class="captcha-label">Enter the code shown below <span style="color:#e05252">*</span></label>
+      <div class="captcha-row">
+        <canvas class="captcha-canvas" id="captcha-canvas" width="160" height="48"></canvas>
+        <button type="button" class="captcha-refresh" onclick="generateCaptcha()" title="Refresh code">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+        </button>
+      </div>
+      <input id="captcha-inp" class="captcha-inp" type="text" placeholder="Type the code here..." maxlength="6" autocomplete="off">
+      <div class="hc-err" id="hc-err">Incorrect code. Please try again.</div>
+    </div>
+    <button class="l-btn" onclick="doLogin()">Login to Dashboard</button>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div class="app" id="app">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <span class="topbar-logo">Magic Masala</span>
+      <span class="topbar-badge">Owner Dashboard</span>
+      <div class="live-indicator">
+        <div class="live-dot" id="live-dot"></div>
+        <span class="live-txt" id="live-txt">Live</span>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="refresh-btn" id="refresh-btn" onclick="refreshAll()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+        Refresh
+      </button>
+      <button class="logout-btn" onclick="logout()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Logout
+      </button>
+    </div>
+  </div>
+
+  <!-- MAIN BODY -->
+  <div class="main">
+
+    <!-- STATS -->
+    <div class="stats-row" id="stats-row">
+      <div class="stat"><div class="stat-icon si-gold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><div><div class="stat-val" id="s-bookings">—</div><div class="stat-lbl">Total Bookings</div></div></div>
+      <div class="stat"><div class="stat-icon si-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg></div><div><div class="stat-val" id="s-orders">—</div><div class="stat-lbl">Total Orders</div></div></div>
+      <div class="stat"><div class="stat-icon si-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div><div><div class="stat-val" id="s-messages">—</div><div class="stat-lbl">Messages</div></div></div>
+      <div class="stat"><div class="stat-icon si-purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div><div><div class="stat-val" id="s-revenue">—</div><div class="stat-lbl">Total Revenue</div></div></div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs-row">
+      <button class="tab active" id="tab-b" onclick="switchTab('bookings',this)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Table Bookings <span class="tab-badge" id="tb-b">0</span>
+      </button>
+      <button class="tab" id="tab-o" onclick="switchTab('orders',this)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        Orders <span class="tab-badge" id="tb-o">0</span>
+      </button>
+      <button class="tab" id="tab-m" onclick="switchTab('messages',this)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        Messages <span class="tab-badge" id="tb-m">0</span>
+      </button>
+    </div>
+
+    <!-- BOOKING FILTERS -->
+    <div class="filter-row" id="filter-row">
+      <span class="filter-label">Filter:</span>
+      <button class="fpill active" onclick="setFilter('all',this)">All</button>
+      <button class="fpill" onclick="setFilter('today',this)">Today</button>
+      <button class="fpill" onclick="setFilter('week',this)">This Week</button>
+      <button class="fpill" onclick="setFilter('month',this)">This Month</button>
+      <button class="fpill" onclick="setFilter('recent',this)">Recent (3)</button>
+    </div>
+
+    <!-- TABLE CONTENT -->
+    <div class="table-card">
+      <div class="table-card-head">
+        <div class="table-card-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span id="table-title">Table Bookings</span>
+        </div>
+        <span class="table-card-count" id="table-count"></span>
+      </div>
+      <div style="overflow-x:auto">
+        <div id="table-body"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- NEW BOOKING ALERT BANNER -->
+<div class="alert-banner" id="alert-banner">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="alert-text">New booking received!</span>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- AUDIO ALERT (silent beep using Web Audio API) -->
+<script>
+const ADMIN_ID = 'patel';
+const ADMIN_PW = 'patel123';
+let currentTab   = 'bookings';
+let currentFilter = 'all';
+let allData      = { bookings: [], orders: [], messages: [] };
+let isConnected  = false;
+let socket;
+
+// ── LOGIN ──────────────────────────────────────────────────
+
+// ── CAPTCHA ────────────────────────────────────────────────
+let captchaCode = '';
+
+function generateCaptcha() {
+  const canvas  = document.getElementById('captcha-canvas');
+  const ctx     = canvas.getContext('2d');
+  const chars   = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  captchaCode   = '';
+  for (let i = 0; i < 5; i++) captchaCode += chars[Math.floor(Math.random() * chars.length)];
+
+  // Clear
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Background
+  ctx.fillStyle = '#111';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Noise dots
+  for (let i = 0; i < 60; i++) {
+    ctx.beginPath();
+    ctx.arc(Math.random()*160, Math.random()*48, 1, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(${100+Math.random()*100},${100+Math.random()*100},${100+Math.random()*100},0.4)`;
+    ctx.fill();
+  }
+
+  // Noise lines
+  for (let i = 0; i < 4; i++) {
+    ctx.beginPath();
+    ctx.moveTo(Math.random()*160, Math.random()*48);
+    ctx.lineTo(Math.random()*160, Math.random()*48);
+    ctx.strokeStyle = `rgba(150,150,150,0.25)`;
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+
+  // Draw each character with random tilt and color
+  const colors = ['#c8960a','#4A90D9','#e87c3e','#7ed4a0','#e879a0','#a78bfa'];
+  ctx.font = 'bold 26px monospace';
+  ctx.textBaseline = 'middle';
+  for (let i = 0; i < captchaCode.length; i++) {
+    ctx.save();
+    const x = 18 + i * 28;
+    const y = 24 + (Math.random() * 6 - 3);
+    const angle = (Math.random() - 0.5) * 0.4;
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
+    // Strikethrough effect on random chars
+    ctx.fillText(captchaCode[i], 0, 0);
+    if (Math.random() > 0.5) {
+      ctx.beginPath();
+      ctx.moveTo(-8, 0);
+      ctx.lineTo(18, 0);
+      ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  // Clear input and error
+  const inp = document.getElementById('captcha-inp');
+  if (inp) inp.value = '';
+  document.getElementById('hc-err').style.display = 'none';
+}
+
+
+function doLogin() {
+  const id = document.getElementById('l-id').value.trim();
+  const pw = document.getElementById('l-pw').value.trim();
+  const captchaInput = document.getElementById('captcha-inp').value.trim().toUpperCase();
+  if (!captchaInput) {
+    document.getElementById('hc-err').style.display = 'block';
+    document.getElementById('hc-err').textContent = 'Please enter the CAPTCHA code.';
+    return;
+  }
+  if (captchaInput !== captchaCode) {
+    document.getElementById('hc-err').style.display = 'block';
+    document.getElementById('hc-err').textContent = 'Incorrect code. Please try again.';
+    generateCaptcha();
+    return;
+  }
+  if (id === ADMIN_ID && pw === ADMIN_PW) {
+    document.getElementById('login-screen').classList.add('hide');
+    document.getElementById('app').classList.add('show');
+    initSocket();
+    loadAll();
+  } else {
+    document.getElementById('l-err').style.display = 'block';
+    document.getElementById('l-pw').value = '';
+    document.getElementById('l-pw').focus();
+  }
+}
+
+function logout() {
+  document.getElementById('login-screen').classList.remove('hide');
+  document.getElementById('app').classList.remove('show');
+  document.getElementById('l-id').value = '';
+  document.getElementById('l-pw').value = '';
+  document.getElementById('l-err').style.display = 'none';
+  if (socket) socket.disconnect();
+}
+
+// ── SOCKET.IO — REAL-TIME ──────────────────────────────────
+function initSocket() {
+  socket = io();
+
+  socket.on('connect', () => {
+    isConnected = true;
+    setLive(true);
+    console.log('✅ Real-time connected');
+  });
+
+  socket.on('disconnect', () => {
+    isConnected = false;
+    setLive(false);
+    console.log('⚠️ Real-time disconnected');
+  });
+
+  // New booking event — update dashboard instantly
+  socket.on('new_booking', (booking) => {
+    allData.bookings.unshift(booking);
+    updateStats();
+    if (currentTab === 'bookings') renderTable();
+    showAlert(`New booking from ${booking.name} — ${booking.guests} on ${booking.date}`);
+    playAlert();
+    showToast('New table booking received!');
+  });
+
+  // New order event
+  socket.on('new_order', (order) => {
+    allData.orders.unshift(order);
+    updateStats();
+    if (currentTab === 'orders') renderTable();
+    showAlert(`New order from ${order.name} — Rs. ${order.total}`);
+    playAlert();
+    showToast('New order received!');
+  });
+
+  // New message event
+  socket.on('new_message', (msg) => {
+    allData.messages.unshift(msg);
+    updateStats();
+    if (currentTab === 'messages') renderTable();
+    showToast('New message from ' + msg.name);
+  });
+}
+
+function setLive(on) {
+  document.getElementById('live-dot').className = 'live-dot' + (on ? '' : ' off');
+  const t = document.getElementById('live-txt');
+  t.textContent = on ? 'Live' : 'Disconnected';
+  t.className   = 'live-txt' + (on ? '' : ' off');
+}
+
+// ── LOAD ALL DATA ──────────────────────────────────────────
+async function loadAll() {
+  const btn = document.getElementById('refresh-btn');
+  btn.classList.add('spin');
+  try {
+    const [bRes, oRes, mRes, sRes] = await Promise.all([
+      fetch('/api/bookings'),
+      fetch('/api/orders'),
+      fetch('/api/messages'),
+      fetch('/api/stats')
+    ]);
+    allData.bookings = await bRes.json();
+    allData.orders   = await oRes.json();
+    allData.messages = await mRes.json();
+    const stats      = await sRes.json();
+
+    document.getElementById('s-bookings').textContent = stats.bookings;
+    document.getElementById('s-orders').textContent   = stats.orders;
+    document.getElementById('s-messages').textContent = stats.messages;
+    document.getElementById('s-revenue').textContent  = 'Rs.' + stats.revenue;
+    document.getElementById('tb-b').textContent = allData.bookings.length;
+    document.getElementById('tb-o').textContent = allData.orders.length;
+    document.getElementById('tb-m').textContent = allData.messages.length;
+
+    renderTable();
+  } catch(e) {
+    showToast('Could not load data. Check server.');
+  }
+  btn.classList.remove('spin');
+}
+
+async function refreshAll() { await loadAll(); showToast('Dashboard refreshed!'); }
+
+function updateStats() {
+  document.getElementById('s-bookings').textContent = allData.bookings.length;
+  document.getElementById('s-orders').textContent   = allData.orders.length;
+  document.getElementById('s-messages').textContent = allData.messages.length;
+  document.getElementById('tb-b').textContent = allData.bookings.length;
+  document.getElementById('tb-o').textContent = allData.orders.length;
+  document.getElementById('tb-m').textContent = allData.messages.length;
+}
+
+// ── TABS ──────────────────────────────────────────────────
+function switchTab(tab, el) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('filter-row').style.display = tab === 'bookings' ? 'flex' : 'none';
+  const icons = {
+    bookings: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
+    orders:   '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>',
+    messages: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>'
+  };
+  const titles = { bookings: 'Table Bookings', orders: 'Orders', messages: 'Messages' };
+  document.getElementById('table-title').innerHTML = icons[tab] + ' ' + titles[tab];
+  renderTable();
+}
+
+// ── FILTERS ───────────────────────────────────────────────
+function setFilter(f, el) {
+  currentFilter = f;
+  document.querySelectorAll('.fpill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  renderTable();
+}
+
+function applyFilter(data) {
+  if (currentTab !== 'bookings') return data;
+  const now = new Date();
+  if (currentFilter === 'recent') return data.slice(0, 3);
+  return data.filter(item => {
+    if (!item.createdAt) return true;
+    const d = new Date(item.createdAt);
+    if (currentFilter === 'today')  return d.toDateString() === now.toDateString();
+    if (currentFilter === 'week')   { const w = new Date(now); w.setDate(now.getDate()-7); return d >= w; }
+    if (currentFilter === 'month')  { const m = new Date(now); m.setDate(now.getDate()-30); return d >= m; }
+    return true;
+  });
+}
+
+// ── RENDER TABLE ──────────────────────────────────────────
+function renderTable() {
+  const body   = document.getElementById('table-body');
+  const data   = applyFilter(allData[currentTab] || []);
+  const labels = { all:'All', today:'Today', week:'This Week', month:'This Month', recent:'Recent (3)' };
+  document.getElementById('table-count').textContent = data.length + ' record' + (data.length!==1?'s':'') + (currentTab==='bookings' && currentFilter!=='all' ? ' · ' + labels[currentFilter] : '');
+
+  if (!data.length) {
+    body.innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 17H7A5 5 0 017 7h1M15 7h1a5 5 0 010 10h-1M12 12h.01"/></svg><p>No records found</p></div>`;
+    return;
+  }
+
+  if (currentTab === 'bookings') {
+    body.innerHTML = `<table class="tbl">
+      <thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Email</th><th>Date</th><th>Time</th><th>Guests</th><th>Special</th><th>Status</th><th>Received At</th></tr></thead>
+      <tbody>${data.map((b,i) => `<tr>
+        <td style="color:var(--tm)">${i+1}</td>
+        <td><strong>${b.name}</strong></td>
+        <td>${b.phone}</td>
+        <td style="font-size:.77rem;color:var(--tm)">${b.email||'—'}</td>
+        <td style="white-space:nowrap">${b.date}</td>
+        <td style="white-space:nowrap">${b.time}</td>
+        <td>${b.guests}</td>
+        <td style="max-width:130px;font-size:.78rem;color:var(--tm)">${b.special||'—'}</td>
+        <td><span class="${b.status==='Done'?'badge-done':'badge-new'}">${b.status}</span></td>
+        <td style="white-space:nowrap;font-size:.76rem;color:var(--tm)">${fmtDate(b.createdAt)}</td>
+      </tr>`).join('')}</tbody>
+    </table>`;
+  } else if (currentTab === 'orders') {
+    body.innerHTML = `<table class="tbl">
+      <thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Items Ordered</th><th>Total</th><th>Status</th><th>Ordered At</th></tr></thead>
+      <tbody>${data.map((o,i) => `<tr>
+        <td style="color:var(--tm)">${i+1}</td>
+        <td><strong>${o.name}</strong></td>
+        <td>${o.phone}</td>
+        <td style="max-width:220px;font-size:.79rem">${o.items}</td>
+        <td style="color:var(--gold);font-weight:600">Rs.${o.total}</td>
+        <td><span class="${o.status==='Done'?'badge-done':'badge-new'}">${o.status}</span></td>
+        <td style="white-space:nowrap;font-size:.76rem;color:var(--tm)">${fmtDate(o.createdAt)}</td>
+      </tr>`).join('')}</tbody>
+    </table>`;
+  } else {
+    body.innerHTML = `<table class="tbl">
+      <thead><tr><th>#</th><th>Name</th><th>Message</th><th>Status</th><th>Sent At</th></tr></thead>
+      <tbody>${data.map((m,i) => `<tr>
+        <td style="color:var(--tm)">${i+1}</td>
+        <td><strong>${m.name}</strong></td>
+        <td style="max-width:340px">${m.message}</td>
+        <td><span class="${m.status==='Done'?'badge-done':'badge-new'}">${m.status}</span></td>
+        <td style="white-space:nowrap;font-size:.76rem;color:var(--tm)">${fmtDate(m.createdAt)}</td>
+      </tr>`).join('')}</tbody>
+    </table>`;
+  }
+}
+
+// ── HELPERS ───────────────────────────────────────────────
+function fmtDate(v) {
+  if (!v) return '—';
+  try { return new Date(v).toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}); }
+  catch(e) { return v; }
+}
+
+let _at;
+function showAlert(msg) {
+  const el = document.getElementById('alert-banner');
+  document.getElementById('alert-text').textContent = msg;
+  el.classList.add('show');
+  clearTimeout(_at);
+  _at = setTimeout(() => el.classList.remove('show'), 5000);
+}
+
+let _tt;
+function showToast(msg) {
+  clearTimeout(_tt);
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  _tt = setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+function playAlert() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.value = 880;
+    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.6);
+  } catch(e) {}
+}
+
+// Auto-focus login on load & generate captcha
+window.onload = () => {
+  generateCaptcha();
+  document.getElementById('l-id').focus();
+};
+</script>
+</body>
+</html>
