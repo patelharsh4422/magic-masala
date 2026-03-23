@@ -163,8 +163,45 @@ body{background:var(--bg);color:var(--w);font-family:'Inter',sans-serif;font-wei
 .dd{font-size:.81rem;color:#7a6a58;line-height:1.5;margin-bottom:14px}
 .df{display:flex;align-items:center;justify-content:space-between}
 .dp{color:var(--gold);font-weight:600;font-size:1rem}
+
+/* ── QUANTITY CONTROLLER on card ── */
 .ab{background:var(--gold);color:#fff;border:none;padding:7px 15px;border-radius:50px;font-size:.81rem;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}
 .ab:hover{background:var(--gold2);transform:scale(1.04)}
+.qty-ctrl-card{display:flex;align-items:center;gap:0;border-radius:50px;overflow:hidden;border:1.5px solid var(--gold)}
+.qcb{width:30px;height:30px;background:var(--gold);color:#fff;border:none;font-size:1.1rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;font-family:'Inter',sans-serif}
+.qcb:hover{background:var(--gold2)}
+.qcn{min-width:28px;text-align:center;font-size:.85rem;font-weight:700;color:var(--gold);background:#fff;height:30px;display:flex;align-items:center;justify-content:center}
+
+/* ── STICKY CART BAR ── */
+.sticky-bar{position:fixed;bottom:0;left:0;right:0;z-index:800;background:var(--gold);color:#fff;padding:14px 22px;display:none;align-items:center;justify-content:space-between;box-shadow:0 -4px 24px rgba(200,150,10,.4);cursor:pointer;transition:all .3s}
+.sticky-bar.show{display:flex}
+.sticky-bar:hover{background:var(--gold2)}
+.sb-left{display:flex;align-items:center;gap:10px}
+.sb-count{background:rgba(0,0,0,.2);border-radius:50px;padding:3px 10px;font-size:.8rem;font-weight:700}
+.sb-txt{font-size:.92rem;font-weight:600}
+.sb-right{display:flex;align-items:center;gap:6px;font-size:.92rem;font-weight:700}
+.sb-right svg{width:16px;height:16px}
+
+/* ── COUPON SECTION ── */
+.coupon-wrap{background:rgba(200,150,10,.06);border:1.5px dashed rgba(200,150,10,.3);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+.coupon-title{font-size:.82rem;font-weight:600;color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.coupon-title svg{width:15px;height:15px}
+.coupon-row{display:flex;gap:8px}
+.coupon-inp{flex:1;background:var(--bgi);border:1px solid rgba(255,255,255,.1);color:#fff;padding:10px 13px;border-radius:8px;font-family:'Inter',sans-serif;font-size:.88rem;outline:none;letter-spacing:.08em;text-transform:uppercase;transition:border-color .2s}
+.coupon-inp:focus{border-color:rgba(200,150,10,.4)}
+.coupon-inp::placeholder{color:rgba(255,255,255,.25);letter-spacing:normal;text-transform:none}
+.coupon-apply{background:var(--gold);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-family:'Inter',sans-serif;font-size:.86rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0}
+.coupon-apply:hover{background:var(--gold2)}
+.coupon-msg{font-size:.78rem;margin-top:7px;display:none}
+.coupon-msg.ok{color:#4ade80;display:block}
+.coupon-msg.err{color:#f87171;display:block}
+
+/* ── SAVINGS CARD ── */
+.savings-card{background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.2);border-radius:10px;padding:12px 16px;margin-bottom:14px;display:none}
+.savings-card.show{display:block}
+.savings-row{display:flex;justify-content:space-between;align-items:center;font-size:.83rem}
+.savings-row .l{color:rgba(74,222,128,.8)}
+.savings-row .r{color:#4ade80;font-weight:700}
 
 /* GALLERY */
 .gallery{padding:78px 60px;background:var(--bg)}
@@ -301,11 +338,11 @@ textarea.finp{resize:vertical;min-height:86px}
 .sdot:hover{background:#180d03;border-color:#180d03;color:#180d03}
 
 /* FABs */
-.hfab{position:fixed;bottom:80px;right:18px;width:44px;height:44px;background:rgba(28,16,5,.88);border:1px solid rgba(200,150,10,.32);color:var(--gold);border-radius:50%;cursor:pointer;z-index:498;box-shadow:0 4px 16px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;transition:all .25s;opacity:0;pointer-events:none;backdrop-filter:blur(4px)}
+.hfab{position:fixed;bottom:132px;right:18px;width:44px;height:44px;background:rgba(28,16,5,.88);border:1px solid rgba(200,150,10,.32);color:var(--gold);border-radius:50%;cursor:pointer;z-index:498;box-shadow:0 4px 16px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;transition:all .25s;opacity:0;pointer-events:none;backdrop-filter:blur(4px)}
 .hfab.vis{opacity:1;pointer-events:all}
 .hfab:hover{background:var(--gold);color:#fff;border-color:var(--gold)}
 .hfab svg{width:17px;height:17px}
-.wfab{position:fixed;bottom:20px;right:18px;width:50px;height:50px;background:#25D366;color:#fff;border:none;border-radius:50%;z-index:498;box-shadow:0 4px 20px rgba(37,211,102,.44);display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all .25s}
+.wfab{position:fixed;bottom:80px;right:18px;width:50px;height:50px;background:#25D366;color:#fff;border:none;border-radius:50%;z-index:498;box-shadow:0 4px 20px rgba(37,211,102,.44);display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all .25s}
 .wfab:hover{background:#1ebe5d;transform:scale(1.08)}
 .wfab svg{width:24px;height:24px}
 
@@ -574,6 +611,18 @@ textarea.finp{resize:vertical;min-height:86px}
 <button class="sdot" onclick="window.open('/admin','_blank')">Owner</button>
 
 <!-- HOME FAB -->
+
+<!-- STICKY CART BAR -->
+<div class="sticky-bar" id="sticky-bar" onclick="go('checkout')">
+  <div class="sb-left">
+    <span class="sb-count" id="sb-count">0 items</span>
+    <span class="sb-txt">added to cart</span>
+  </div>
+  <div class="sb-right">
+    View Cart
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+  </div>
+</div>
 <button class="hfab" id="hfab" onclick="go('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></button>
 
 <!-- WHATSAPP FAB -->
@@ -603,7 +652,7 @@ function closeSB(){document.getElementById('mob-sb').classList.remove('open');do
 // CART
 let cart=JSON.parse(localStorage.getItem('mm_cart')||'[]');
 const saveCart=()=>{localStorage.setItem('mm_cart',JSON.stringify(cart));updCnt()};
-function addToCart(id,name,price){const ex=cart.find(c=>c.id===id);if(ex)ex.qty++;else cart.push({id,name,price,qty:1});saveCart();showToast(name+' added to cart')}
+function addToCart(id,name,price){const ex=cart.find(c=>c.id===id);if(ex)ex.qty++;else cart.push({id,name,price,qty:1});saveCart();showToast(name+' added to cart');updStickyBar();}
 function removeFromCart(id){cart=cart.filter(c=>c.id!==id);saveCart();renderCO()}
 function changeQty(id,d){const it=cart.find(c=>c.id===id);if(!it)return;it.qty+=d;if(it.qty<=0)removeFromCart(id);else{saveCart();renderCO()}}
 function updCnt(){const n=cart.reduce((s,c)=>s+c.qty,0);document.getElementById('cart-count').textContent=n;const m=document.getElementById('mob-cart-count');if(m)m.textContent=n}
@@ -635,7 +684,49 @@ history.replaceState({page:'home'},'','#home');
 
 // DISH CARD
 function dishCard(item){
-  return `<div class="dc"><div class="di"><img src="${item.img}" alt="${item.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=500&q=80'"><span class="vb"><svg style="width:9px;height:9px" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>Veg</span></div><div class="db"><div class="dn">${item.name}</div><div class="dd">${item.desc}</div><div class="df"><span class="dp">Rs. ${item.price}</span><button class="ab" onclick="addToCart(${item.id},'${item.name.replace(/'/g,"\\'")}',${item.price})">+ Add</button></div></div></div>`;
+  const inCart = cart.find(c=>c.id===item.id);
+  const btnHtml = inCart
+    ? `<div class="qty-ctrl-card"><button class="qcb" onclick="event.stopPropagation();cardQty(${item.id},-1)">−</button><span class="qcn">${inCart.qty}</span><button class="qcb" onclick="event.stopPropagation();cardQty(${item.id},1)">+</button></div>`
+    : `<button class="ab" onclick="cardAdd(${item.id},'${item.name.replace(/'/g,"\\'")}',${item.price})">+ Add</button>`;
+  return `<div class="dc" id="dc-${item.id}"><div class="di"><img src="${item.img}" alt="${item.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=500&q=80'"><span class="vb"><svg style="width:9px;height:9px" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>Veg</span></div><div class="db"><div class="dn">${item.name}</div><div class="dd">${item.desc}</div><div class="df"><span class="dp">Rs. ${item.price}</span>${btnHtml}</div></div></div>`;
+}
+
+function cardAdd(id,name,price){
+  addToCart(id,name,price);
+  refreshCardBtn(id);
+  updStickyBar();
+}
+function cardQty(id,d){
+  const it=cart.find(c=>c.id===id);
+  if(!it)return;
+  it.qty+=d;
+  if(it.qty<=0)cart=cart.filter(c=>c.id!==id);
+  saveCart();
+  refreshCardBtn(id);
+  updStickyBar();
+}
+function refreshCardBtn(id){
+  // Refresh just the button inside the card
+  const item = allMenu.find(i=>i.id===id) || (typeof HOME_MENU!=='undefined'?HOME_MENU.find(i=>i.id===id):null);
+  if(!item) return;
+  const inCart=cart.find(c=>c.id===id);
+  const btnHtml=inCart
+    ?`<div class="qty-ctrl-card"><button class="qcb" onclick="event.stopPropagation();cardQty(${id},-1)">−</button><span class="qcn">${inCart.qty}</span><button class="qcb" onclick="event.stopPropagation();cardQty(${id},1)">+</button></div>`
+    :`<button class="ab" onclick="cardAdd(${id},'${item.name.replace(/'/g,"\\'")}',${item.price})">+ Add</button>`;
+  const card=document.getElementById('dc-'+id);
+  if(card){const df=card.querySelector('.df');if(df){const old=df.querySelector('.ab,.qty-ctrl-card');if(old)old.outerHTML=btnHtml;else df.insertAdjacentHTML('beforeend',btnHtml);}}
+}
+function updStickyBar(){
+  const n=cart.reduce((s,c)=>s+c.qty,0);
+  const bar=document.getElementById('sticky-bar');
+  const sc=document.getElementById('sb-count');
+  if(!bar)return;
+  if(n>0){
+    sc.textContent=n+' item'+(n!==1?'s':'');
+    bar.classList.add('show');
+  } else {
+    bar.classList.remove('show');
+  }
 }
 
 // LOAD HOME
@@ -664,7 +755,26 @@ function renderCO(){
   const w=document.getElementById('co-wrap');
   if(!cart.length){w.innerHTML=`<div class="co-body"><div class="empty-co"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg><h3>Your cart is empty</h3><p>Add some dishes from our menu first</p><button class="btp" onclick="go('menu')">Browse Menu</button></div></div>`;return}
   const tot=cart.reduce((s,c)=>s+c.price*c.qty,0),tq=cart.reduce((s,c)=>s+c.qty,0);
-  w.innerHTML=`<div class="co-body"><div class="co-card"><h3>Order Summary</h3>${cart.map(it=>`<div class="co-item"><div class="co-in"><strong>${it.name}</strong><span>Rs. ${it.price} each</span></div><div class="qctrl"><button class="qb" onclick="changeQty(${it.id},-1)">−</button><span class="qn">${it.qty}</span><button class="qb" onclick="changeQty(${it.id},1)">+</button></div><button class="dbtn" onclick="removeFromCart(${it.id})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg></button><span class="copr">Rs. ${it.price*it.qty}</span></div>`).join('')}<div class="cosum"><div class="corow"><span class="l">Items</span><span class="r">${tq}</span></div><div class="corow tot"><span class="l">Total</span><span class="r">Rs. ${tot}</span></div></div></div>
+  w.innerHTML=`<div class="co-body"><div class="co-card"><h3>Order Summary</h3>${cart.map(it=>`<div class="co-item"><div class="co-in"><strong>${it.name}</strong><span>Rs. ${it.price} each</span></div><div class="qctrl"><button class="qb" onclick="changeQty(${it.id},-1)">−</button><span class="qn">${it.qty}</span><button class="qb" onclick="changeQty(${it.id},1)">+</button></div><button class="dbtn" onclick="removeFromCart(${it.id})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg></button><span class="copr">Rs. ${it.price*it.qty}</span></div>`).join('')}<div class="cosum">
+        <div class="corow"><span class="l">Subtotal (${tq} items)</span><span class="r">Rs. ${tot}</span></div>
+        <div class="corow"><span class="l">Delivery Fee</span><span class="r" style="color:#4ade80;font-weight:600">FREE</span></div>
+        <div id="discount-row" class="corow" style="display:none"><span class="l">Discount (10%)</span><span class="r" style="color:#4ade80;font-weight:600" id="discount-amt"></span></div>
+        <div class="corow tot" style="margin-top:8px;padding-top:10px;border-top:1px solid var(--bd)"><span class="l">Total Payable</span><span class="r" id="final-total">Rs. ${tot}</span></div>
+      </div>
+      <!-- SAVINGS -->
+      <div class="savings-card" id="savings-card">
+        <div class="savings-row"><span class="l">Your savings on this order</span><span class="r" id="savings-amt"></span></div>
+      </div>
+      <!-- COUPON -->
+      <div class="coupon-wrap">
+        <div class="coupon-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>Apply Coupon</div>
+        <div class="coupon-row">
+          <input class="coupon-inp" id="coupon-inp" type="text" placeholder="Enter coupon code" maxlength="20">
+          <button class="coupon-apply" onclick="applyCoupon(${tot})">Apply</button>
+        </div>
+        <div class="coupon-msg" id="coupon-msg"></div>
+      </div>
+    </div>
   <div class="co-card"><h3>Your Details</h3><div class="fg"><label class="flab">Name <span class="req">*</span></label><input id="o-name" class="finp" type="text" placeholder="Your name"></div><div class="fg"><label class="flab">Phone <span class="req">*</span></label><input id="o-phone" class="finp" type="tel" placeholder="+91 XXXXX XXXXX"></div><div class="fg"><label class="flab">Email</label><input id="o-email" class="finp" type="email" placeholder="your@email.com"></div><div class="fg"><label class="flab">Delivery Address <span class="req">*</span></label><textarea id="o-address" class="finp" style="min-height:72px;resize:vertical" placeholder="House no, Street, Area, City..."></textarea></div>
   <button class="paybtn" id="pay-btn" onclick="placeOrder(${tot})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Pay Rs. ${tot}</button>
   <p class="secnote">Secured by Stripe. You will be redirected to complete payment.</p></div></div>`;
@@ -704,6 +814,7 @@ function showToast(msg){clearTimeout(_tt);const el=document.getElementById('toas
 updCnt();
 loadHome();
 renderMenuPage();
+updStickyBar();
 </script>
 </body>
 </html>
