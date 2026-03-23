@@ -284,8 +284,8 @@ textarea.finp{resize:vertical;min-height:86px}
 .co-h h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,4vw,3.4rem);font-weight:800;color:#fff}
 .co-body{max-width:1040px;margin:0 auto;padding:0 28px 70px;display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:start}
 .co-card{background:var(--bg3);border:1px solid var(--bd);border-radius:14px;padding:26px 28px}
-.co-card h3{font-family:'Playfair Display',serif;font-size:1.12rem;font-weight:700;color:#fff;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--bd)}
-.co-item{display:flex;align-items:center;padding:13px 0;border-bottom:1px solid var(--bd);gap:9px}
+.co-card h3{font-family:'Playfair Display',serif;font-size:1.12rem;font-weight:700;color:#fff;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--bd)}
+.co-item{display:flex;align-items:center;padding:15px 0;border-bottom:1px solid var(--bd);gap:10px}
 .co-in{flex:1}
 .co-in strong{font-size:.88rem;font-weight:600;color:#fff;display:block;margin-bottom:3px}
 .co-in span{font-size:.77rem;color:var(--gold)}
@@ -297,11 +297,13 @@ textarea.finp{resize:vertical;min-height:86px}
 .dbtn:hover{transform:scale(1.2)}
 .dbtn svg{width:15px;height:15px}
 .copr{font-weight:600;font-size:.88rem;min-width:62px;text-align:right}
-.cosum{padding-top:14px;display:flex;flex-direction:column;gap:6px}
-.corow{display:flex;justify-content:space-between;align-items:center;font-size:.84rem}
+.cosum{padding-top:16px;display:flex;flex-direction:column;gap:10px}
+.corow{display:flex;justify-content:space-between;align-items:center;font-size:.86rem;padding:2px 0}
 .corow .l{color:var(--tm)}
-.corow.tot .l{color:#fff;font-weight:600;font-size:.94rem}
-.corow.tot .r{color:var(--gold);font-weight:700;font-size:1.03rem}
+.corow.tot{padding-top:12px;margin-top:4px;border-top:1px solid var(--bd)}
+.corow.tot .l{color:#fff;font-weight:700;font-size:.96rem}
+.corow.tot .r{color:var(--gold);font-weight:700;font-size:1.06rem}
+
 .paybtn{width:100%;background:var(--gold);color:#fff;border:none;padding:14px;border-radius:10px;font-family:'Inter',sans-serif;font-size:.95rem;font-weight:600;cursor:pointer;margin-top:17px;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s}
 .paybtn:hover{background:var(--gold2)}
 .paybtn svg{width:15px;height:15px}
@@ -668,7 +670,10 @@ function go(id){
   if(history.state?.page!==id)history.pushState({page:id},'','#'+id);
   window.scrollTo(0,0);
   const fab=document.getElementById('hfab');if(fab)fab.classList.toggle('vis',id!=='home');
-  if(id==='checkout')renderCO();
+  // Hide sticky bar on checkout page
+  const bar=document.getElementById('sticky-bar');
+  if(bar)bar.style.display=(id==='checkout')?'none':'';
+  if(id==='checkout'){renderCO();couponApplied=false;}
   if(id==='menu')renderMenuPage();
 }
 window.addEventListener('popstate',e=>{
@@ -730,7 +735,7 @@ function updStickyBar(){
 }
 
 // LOAD HOME
-async function loadHome(){try{const r=await fetch(API+'/api/menu');const d=await r.json();document.getElementById('home-grid').innerHTML=d.slice(0,6).map(dishCard).join('')}catch(e){document.getElementById('home-grid').innerHTML='<p style="color:var(--tm);text-align:center;padding:40px;grid-column:1/-1">Could not load dishes.</p>'}}
+async function loadHome(){try{const r=await fetch(API+'/api/menu');const d=await r.json();if(!allMenu.length)allMenu=d;document.getElementById('home-grid').innerHTML=d.slice(0,6).map(dishCard).join('')}catch(e){document.getElementById('home-grid').innerHTML='<p style="color:var(--tm);text-align:center;padding:40px;grid-column:1/-1">Could not load dishes.</p>'}}
 
 // MENU
 const CATS=['All','Beverages','Breads','Desserts','Main Course','Rice & Biryani','Starters'];
@@ -811,6 +816,43 @@ function closeMod(){document.getElementById('mod-ov').classList.remove('open');g
 // TOAST
 let _tt;
 function showToast(msg){clearTimeout(_tt);const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');_tt=setTimeout(()=>el.classList.remove('show'),2800)}
+
+// ── COUPON ─────────────────────────────────────────────────
+let couponApplied = false;
+function applyCoupon(subtotal) {
+  const inp  = document.getElementById('coupon-inp');
+  const code = inp?.value.trim().toUpperCase();
+  const msg  = document.getElementById('coupon-msg');
+  const discRow  = document.getElementById('discount-row');
+  const discAmt  = document.getElementById('discount-amt');
+  const finalTot = document.getElementById('final-total');
+  const savingsCard = document.getElementById('savings-card');
+  const savingsAmt  = document.getElementById('savings-amt');
+
+  if (!code) { showCouponMsg(msg,'Please enter a coupon code','err'); return; }
+  if (couponApplied) { showCouponMsg(msg,'Coupon already applied!','err'); return; }
+
+  if (code === 'MAGIC10') {
+    const discount = Math.round(subtotal * 0.10);
+    const final    = subtotal - discount;
+    couponApplied  = true;
+    if(discRow) discRow.style.display='flex';
+    if(discAmt) discAmt.textContent='− Rs. '+discount;
+    if(finalTot) finalTot.textContent='Rs. '+final;
+    if(savingsCard) savingsCard.classList.add('show');
+    if(savingsAmt) savingsAmt.textContent='Rs. '+discount;
+    if(inp) inp.disabled=true;
+    showCouponMsg(msg,'Coupon applied! You saved Rs. '+discount+' 🎉','ok');
+  } else {
+    showCouponMsg(msg,'Invalid code. Try MAGIC10','err');
+  }
+}
+function showCouponMsg(el, txt, type) {
+  if(!el) return;
+  el.textContent = txt;
+  el.className = 'coupon-msg ' + type;
+}
+
 updCnt();
 loadHome();
 renderMenuPage();
