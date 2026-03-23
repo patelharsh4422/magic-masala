@@ -3,7 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Magic Masala | Restaurant & Banquets</title>
+<title>Magic Masala | Best Vegetarian Restaurant & Banquets in Vastral, Ahmedabad</title>
+<meta name="description" content="Magic Masala Restaurant & Banquets — Authentic vegetarian Indian cuisine in Vastral, Ahmedabad. Book a table online, explore our menu, and enjoy a royal dining experience.">
+<meta name="keywords" content="restaurant Vastral, restaurant Ahmedabad, vegetarian restaurant Ahmedabad, Magic Masala restaurant, banquet hall Vastral, Indian food Ahmedabad, table booking Ahmedabad">
+<meta name="author" content="Magic Masala Restaurant & Banquets">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Magic Masala | Restaurant & Banquets — Vastral, Ahmedabad">
+<meta property="og:description" content="Authentic vegetarian Indian cuisine in Vastral, Ahmedabad. Book a table online.">
+<meta property="og:type" content="restaurant">
+<meta property="og:url" content="https://magic-masala.onrender.com">
+<link rel="canonical" href="https://magic-masala.onrender.com">
+<!-- Schema Markup: Tells Google this is a Restaurant -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "name": "Magic Masala Restaurant & Banquets",
+  "image": "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=1200&q=80",
+  "url": "https://magic-masala.onrender.com",
+  "telephone": "+919327815264",
+  "email": "patelharsh17308@gmail.com",
+  "priceRange": "₹₹",
+  "servesCuisine": "Indian",
+  "menu": "https://magic-masala.onrender.com/#menu",
+  "acceptsReservations": "True",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Vastral",
+    "addressLocality": "Ahmedabad",
+    "addressRegion": "Gujarat",
+    "postalCode": "382418",
+    "addressCountry": "IN"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 22.9784,
+    "longitude": 72.6514
+  },
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+    "opens": "11:00",
+    "closes": "23:00"
+  },
+  "sameAs": [
+    "https://www.instagram.com",
+    "https://www.facebook.com"
+  ]
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -617,7 +665,7 @@ function renderCO(){
   if(!cart.length){w.innerHTML=`<div class="co-body"><div class="empty-co"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg><h3>Your cart is empty</h3><p>Add some dishes from our menu first</p><button class="btp" onclick="go('menu')">Browse Menu</button></div></div>`;return}
   const tot=cart.reduce((s,c)=>s+c.price*c.qty,0),tq=cart.reduce((s,c)=>s+c.qty,0);
   w.innerHTML=`<div class="co-body"><div class="co-card"><h3>Order Summary</h3>${cart.map(it=>`<div class="co-item"><div class="co-in"><strong>${it.name}</strong><span>Rs. ${it.price} each</span></div><div class="qctrl"><button class="qb" onclick="changeQty(${it.id},-1)">−</button><span class="qn">${it.qty}</span><button class="qb" onclick="changeQty(${it.id},1)">+</button></div><button class="dbtn" onclick="removeFromCart(${it.id})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg></button><span class="copr">Rs. ${it.price*it.qty}</span></div>`).join('')}<div class="cosum"><div class="corow"><span class="l">Items</span><span class="r">${tq}</span></div><div class="corow tot"><span class="l">Total</span><span class="r">Rs. ${tot}</span></div></div></div>
-  <div class="co-card"><h3>Your Details</h3><div class="fg"><label class="flab">Name <span class="req">*</span></label><input id="o-name" class="finp" type="text" placeholder="Your name"></div><div class="fg"><label class="flab">Phone <span class="req">*</span></label><input id="o-phone" class="finp" type="tel" placeholder="+91 XXXXX XXXXX"></div><div class="fg"><label class="flab">Email</label><input id="o-email" class="finp" type="email" placeholder="your@email.com"></div>
+  <div class="co-card"><h3>Your Details</h3><div class="fg"><label class="flab">Name <span class="req">*</span></label><input id="o-name" class="finp" type="text" placeholder="Your name"></div><div class="fg"><label class="flab">Phone <span class="req">*</span></label><input id="o-phone" class="finp" type="tel" placeholder="+91 XXXXX XXXXX"></div><div class="fg"><label class="flab">Email</label><input id="o-email" class="finp" type="email" placeholder="your@email.com"></div><div class="fg"><label class="flab">Delivery Address <span class="req">*</span></label><textarea id="o-address" class="finp" style="min-height:72px;resize:vertical" placeholder="House no, Street, Area, City..."></textarea></div>
   <button class="paybtn" id="pay-btn" onclick="placeOrder(${tot})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Pay Rs. ${tot}</button>
   <p class="secnote">Secured by Stripe. You will be redirected to complete payment.</p></div></div>`;
 }
@@ -636,10 +684,10 @@ async function submitBooking(){
 
 // ORDER
 async function placeOrder(tot){
-  const n=document.getElementById('o-name')?.value.trim(),p=document.getElementById('o-phone')?.value.trim();
-  if(!n||!p){showToast('Please enter your name and phone');return}
+  const n=document.getElementById('o-name')?.value.trim(),p=document.getElementById('o-phone')?.value.trim(),addr=document.getElementById('o-address')?.value.trim();
+  if(!n||!p||!addr){showToast('Please fill name, phone and delivery address');return}
   const btn=document.getElementById('pay-btn');btn.disabled=true;btn.innerHTML='<span class="spin"></span>Processing...';
-  try{const r=await fetch(API+'/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:n,phone:p,email:document.getElementById('o-email')?.value,items:cart.map(c=>`${c.name} x${c.qty}`).join(', '),total:tot})});
+  try{const r=await fetch(API+'/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:n,phone:p,email:document.getElementById('o-email')?.value,address:addr,items:cart.map(c=>`${c.name} x${c.qty}`).join(', '),total:tot})});
   const data=await r.json();
   if(data.success){cart=[];saveCart();showMod('Order Placed!',`Thank you ${n}! Your order of Rs. ${tot} has been received. We will prepare it fresh for you!`)}
   else showToast(data.error||'Something went wrong')}catch(e){showToast('Could not connect to server.')}

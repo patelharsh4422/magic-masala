@@ -50,12 +50,13 @@ const Booking = mongoose.model('Booking', new mongoose.Schema({
 }, { timestamps: true }));
 
 const Order = mongoose.model('Order', new mongoose.Schema({
-  name   : { type: String, required: true },
-  phone  : { type: String, required: true },
-  email  : { type: String, default: '' },
-  items  : { type: String, required: true },
-  total  : { type: Number, required: true },
-  status : { type: String, default: 'New' }
+  name    : { type: String, required: true },
+  phone   : { type: String, required: true },
+  email   : { type: String, default: '' },
+  address : { type: String, default: '' },
+  items   : { type: String, required: true },
+  total   : { type: Number, required: true },
+  status  : { type: String, default: 'New' }
 }, { timestamps: true }));
 
 const Message = mongoose.model('Message', new mongoose.Schema({
@@ -131,10 +132,10 @@ app.delete('/api/bookings/:id', async (req, res) => {
 // ── ORDERS ───────────────────────────────────────────────────
 app.post('/api/orders', async (req, res) => {
   try {
-    const { name, phone, email, items, total } = req.body;
+    const { name, phone, email, address, items, total } = req.body;
     if (!name || !phone || !items || !total)
       return res.status(400).json({ error: 'Missing required fields' });
-    const order = await Order.create({ name, phone, email, items, total });
+    const order = await Order.create({ name, phone, email, address, items, total });
 
     // Broadcast to admin
     io.emit('new_order', order);
@@ -202,6 +203,28 @@ app.get('/api/stats', async (req, res) => {
     const rev      = await Order.aggregate([{ $group: { _id: null, t: { $sum: '$total' } } }]);
     res.json({ bookings, orders, messages, revenue: rev[0]?.t || 0 });
   } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+
+// ── SITEMAP ──────────────────────────────────────────────────
+app.get('/sitemap.xml', (req, res) => {
+  res.header('Content-Type', 'application/xml');
+  res.send(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://magic-masala.onrender.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://magic-masala.onrender.com/#menu</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://magic-masala.onrender.com/#book</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://magic-masala.onrender.com/#contact</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+</urlset>`);
+});
+
+// ── ROBOTS.TXT ────────────────────────────────────────────────
+app.get('/robots.txt', (req, res) => {
+  res.header('Content-Type', 'text/plain');
+  res.send(`User-agent: *
+Allow: /
+Disallow: /admin
+Sitemap: https://magic-masala.onrender.com/sitemap.xml`);
 });
 
 // ── CATCH ALL ─────────────────────────────────────────────────

@@ -551,7 +551,7 @@ function renderTable() {
     </table>`;
   } else if (currentTab === 'orders') {
     body.innerHTML = `<table class="tbl">
-      <thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Items Ordered</th><th>Total</th><th>Status</th><th>Ordered At</th></tr></thead>
+      <thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Address</th><th>Items Ordered</th><th>Total</th><th>Status</th><th>Ordered At</th></tr></thead>
       <tbody>${data.map((o,i) => `<tr>
         <td style="color:var(--tm)">${i+1}</td>
         <td><strong>${o.name}</strong></td>
