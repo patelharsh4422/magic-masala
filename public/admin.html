@@ -44,6 +44,9 @@ html,body{height:100%;background:var(--bg);color:var(--w);font-family:'Inter',sa
 .hc-err{display:none;color:#fca5a5;font-size:.78rem;margin-bottom:10px;padding-left:4px}
 .l-btn{width:100%;background:var(--gold);color:#fff;border:none;padding:13px;border-radius:10px;font-family:'Inter',sans-serif;font-size:.95rem;font-weight:600;cursor:pointer;transition:all .2s;margin-top:4px}
 .l-btn:hover{background:var(--gold2);box-shadow:0 4px 20px rgba(200,150,10,.35)}
+.back-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;background:transparent;border:1px solid rgba(255,255,255,.08);color:var(--tm);padding:11px;border-radius:10px;font-family:'Inter',sans-serif;font-size:.86rem;cursor:pointer;margin-top:10px;transition:all .2s}
+.back-btn:hover{border-color:rgba(255,255,255,.18);color:var(--tl)}
+.back-btn svg{width:15px;height:15px}
 
 /* ── MAIN LAYOUT ── */
 .app{display:none;height:100vh;flex-direction:column}
@@ -173,6 +176,10 @@ html,body{height:100%;background:var(--bg);color:var(--w);font-family:'Inter',sa
       <div class="hc-err" id="hc-err">Incorrect code. Please try again.</div>
     </div>
     <button class="l-btn" onclick="doLogin()">Login to Dashboard</button>
+    <button class="back-btn" onclick="window.close()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Back to Website
+    </button>
   </div>
 </div>
 
