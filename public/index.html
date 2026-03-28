@@ -52,6 +52,8 @@
   ]
 }
 </script>
+<!-- Razorpay Checkout SDK -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -781,7 +783,16 @@ function renderCO(){
       </div>
     </div>
   <div class="co-card"><h3>Your Details</h3><div class="fg"><label class="flab">Name <span class="req">*</span></label><input id="o-name" class="finp" type="text" placeholder="Your name"></div><div class="fg"><label class="flab">Phone <span class="req">*</span></label><input id="o-phone" class="finp" type="tel" placeholder="+91 XXXXX XXXXX"></div><div class="fg"><label class="flab">Email</label><input id="o-email" class="finp" type="email" placeholder="your@email.com"></div><div class="fg"><label class="flab">Delivery Address <span class="req">*</span></label><textarea id="o-address" class="finp" style="min-height:72px;resize:vertical" placeholder="House no, Street, Area, City..."></textarea></div>
-  <button class="paybtn" id="pay-btn" onclick="placeOrder(${tot})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Pay Rs. ${tot}</button>
+  <button class="paybtn" id="pay-btn" onclick="placeOrder(${tot})">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        Pay Rs. ${tot} — UPI / Card
+      </button>
+      <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;flex-wrap:wrap">
+        <span style="font-size:.7rem;color:var(--tm)">Secured by</span>
+        <span style="background:#072654;color:#fff;padding:3px 10px;border-radius:4px;font-size:.72rem;font-weight:700;letter-spacing:.04em">Razorpay</span>
+        <span style="font-size:.7rem;color:var(--tm)">|</span>
+        <span style="font-size:.72rem;color:var(--tm)">GPay · PhonePe · Paytm · Card</span>
+      </div>
   <p class="secnote">Secured by Stripe. You will be redirected to complete payment.</p></div></div>`;
 }
 
@@ -797,16 +808,113 @@ async function submitBooking(){
   finally{btn.disabled=false;btn.innerHTML='Confirm Booking'}
 }
 
-// ORDER
-async function placeOrder(tot){
-  const n=document.getElementById('o-name')?.value.trim(),p=document.getElementById('o-phone')?.value.trim(),addr=document.getElementById('o-address')?.value.trim();
-  if(!n||!p||!addr){showToast('Please fill name, phone and delivery address');return}
-  const btn=document.getElementById('pay-btn');btn.disabled=true;btn.innerHTML='<span class="spin"></span>Processing...';
-  try{const r=await fetch(API+'/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:n,phone:p,email:document.getElementById('o-email')?.value,address:addr,items:cart.map(c=>`${c.name} x${c.qty}`).join(', '),total:tot})});
-  const data=await r.json();
-  if(data.success){cart=[];saveCart();showMod('Order Placed!',`Thank you ${n}! Your order of Rs. ${tot} has been received. We will prepare it fresh for you!`)}
-  else showToast(data.error||'Something went wrong')}catch(e){showToast('Could not connect to server.')}
-  finally{if(btn){btn.disabled=false;btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Pay Rs. ${tot}`}}
+// ── RAZORPAY PAYMENT ─────────────────────────────────────
+async function placeOrder(tot) {
+  const n    = document.getElementById('o-name')?.value.trim();
+  const p    = document.getElementById('o-phone')?.value.trim();
+  const addr = document.getElementById('o-address')?.value.trim();
+  const email= document.getElementById('o-email')?.value.trim();
+
+  // Validate fields
+  if (!n || !p || !addr) {
+    showToast('Please fill name, phone and delivery address');
+    return;
+  }
+
+  const btn = document.getElementById('pay-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span>Creating order...';
+
+  try {
+    // Step 1: Create Razorpay order from our server
+    const orderRes = await fetch(API + '/api/create-order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ amount: tot })
+    });
+    const orderData = await orderRes.json();
+
+    if (!orderData.id) {
+      showToast('Could not create payment order. Try again.');
+      btn.disabled = false;
+      btn.innerHTML = 'Pay Rs. ' + tot + ' — UPI / Card';
+      return;
+    }
+
+    // Step 2: Open Razorpay payment popup
+    const options = {
+      key: orderData.key,           // Test key from server
+      amount: orderData.amount,     // in paise
+      currency: 'INR',
+      name: 'Magic Masala',
+      description: 'Food Order',
+      image: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=200&q=80',
+      order_id: orderData.id,
+      prefill: {
+        name:  n,
+        email: email || '',
+        contact: p
+      },
+      theme: { color: '#c8960a' },
+      method: { upi: true, card: true, netbanking: false, wallet: false, emi: false },
+
+      // Step 3: On payment success
+      handler: async function(response) {
+        btn.innerHTML = '<span class="spin"></span>Verifying payment...';
+        try {
+          // Verify payment on server
+          const verifyRes = await fetch(API + '/api/verify-payment', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              razorpay_order_id:   response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature:  response.razorpay_signature,
+              // Order details
+              name: n, phone: p, email: email,
+              address: addr,
+              items: cart.map(c => c.name + ' x' + c.qty).join(', '),
+              total: tot
+            })
+          });
+          const verifyData = await verifyRes.json();
+
+          if (verifyData.success) {
+            cart = []; saveCart(); updStickyBar();
+            showMod('Payment Successful! 🎉', 'Thank you ' + n + '! Your payment of Rs. ' + tot + ' was successful. Your order is being prepared!');
+          } else {
+            showToast('Payment verification failed. Contact us.');
+          }
+        } catch(e) {
+          showToast('Verification error. Please contact us.');
+        }
+        btn.disabled = false;
+        btn.innerHTML = 'Pay Rs. ' + tot + ' — UPI / Card';
+      },
+
+      // On payment failure
+      modal: {
+        ondismiss: function() {
+          btn.disabled = false;
+          btn.innerHTML = 'Pay Rs. ' + tot + ' — UPI / Card';
+          showToast('Payment cancelled.');
+        }
+      }
+    };
+
+    const rzp = new Razorpay(options);
+    rzp.on('payment.failed', function(resp) {
+      showToast('Payment failed: ' + resp.error.description);
+      btn.disabled = false;
+      btn.innerHTML = 'Pay Rs. ' + tot + ' — UPI / Card';
+    });
+    rzp.open();
+
+  } catch(e) {
+    showToast('Could not connect to server.');
+    btn.disabled = false;
+    btn.innerHTML = 'Pay Rs. ' + tot + ' — UPI / Card';
+  }
 }
 
 // MODAL

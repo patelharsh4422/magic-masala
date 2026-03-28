@@ -1,4 +1,6 @@
-const express  = require('express');
+const express   = require('express');
+const Razorpay  = require('razorpay');
+const crypto    = require('crypto');
 const mongoose = require('mongoose');
 const cors     = require('cors');
 const path     = require('path');
@@ -37,6 +39,13 @@ async function sendWhatsApp(message) {
   }
 }
 
+
+// ── Razorpay ─────────────────────────────────────────────────
+const razorpay = new Razorpay({
+  key_id    : process.env.RAZORPAY_KEY_ID     || 'rzp_test_PASTE_YOUR_KEY_HERE',
+  key_secret: process.env.RAZORPAY_KEY_SECRET || 'PASTE_YOUR_SECRET_HERE'
+});
+
 // ── Schemas ──────────────────────────────────────────────────
 const Booking = mongoose.model('Booking', new mongoose.Schema({
   name    : { type: String, required: true },
@@ -56,7 +65,8 @@ const Order = mongoose.model('Order', new mongoose.Schema({
   address : { type: String, default: '' },
   items   : { type: String, required: true },
   total   : { type: Number, required: true },
-  status  : { type: String, default: 'New' }
+  status    : { type: String, default: 'New' },
+  paymentId : { type: String, default: '' }
 }, { timestamps: true }));
 
 const Message = mongoose.model('Message', new mongoose.Schema({
@@ -225,6 +235,82 @@ app.get('/robots.txt', (req, res) => {
 Allow: /
 Disallow: /admin
 Sitemap: https://magic-masala.onrender.com/sitemap.xml`);
+});
+
+
+// ── CREATE RAZORPAY ORDER ─────────────────────────────────────
+app.post('/api/create-order', async (req, res) => {
+  try {
+    const { amount } = req.body;
+    if (!amount) return res.status(400).json({ error: 'Amount required' });
+
+    const order = await razorpay.orders.create({
+      amount  : amount * 100,   // Razorpay uses paise (1 Rs = 100 paise)
+      currency: 'INR',
+      receipt : 'mm_' + Date.now(),
+      notes   : { source: 'Magic Masala Website' }
+    });
+
+    res.json({
+      id    : order.id,
+      amount: order.amount,
+      key   : process.env.RAZORPAY_KEY_ID || 'rzp_test_PASTE_YOUR_KEY_HERE'
+    });
+  } catch (err) {
+    console.log('❌ Razorpay create order error:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ── VERIFY PAYMENT & SAVE ORDER ───────────────────────────────
+app.post('/api/verify-payment', async (req, res) => {
+  try {
+    const {
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature,
+      name, phone, email, address, items, total
+    } = req.body;
+
+    // Verify signature — proves payment is genuine
+    const secret    = process.env.RAZORPAY_KEY_SECRET || 'PASTE_YOUR_SECRET_HERE';
+    const body      = razorpay_order_id + '|' + razorpay_payment_id;
+    const expected  = crypto.createHmac('sha256', secret).update(body).digest('hex');
+
+    if (expected !== razorpay_signature) {
+      return res.status(400).json({ success: false, error: 'Invalid payment signature' });
+    }
+
+    // Signature verified ✅ — now save order to MongoDB
+    const order = await Order.create({
+      name, phone, email: email || '', address: address || '',
+      items, total,
+      status: 'Paid',
+      paymentId: razorpay_payment_id
+    });
+
+    // Notify admin via WhatsApp
+    sendWhatsApp(
+`💳 Payment Received - Magic Masala!
+
+👤 Name    : ${name}
+📞 Phone   : ${phone}
+📍 Address : ${address}
+🛒 Items   : ${items}
+💰 Amount  : Rs. ${total}
+🔖 Txn ID  : ${razorpay_payment_id}
+
+✅ Payment verified & order saved!`
+    );
+
+    // Broadcast to admin dashboard
+    io.emit('new_order', order);
+
+    res.json({ success: true, orderId: order._id });
+  } catch (err) {
+    console.log('❌ Payment verify error:', err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
 });
 
 // ── CATCH ALL ─────────────────────────────────────────────────
