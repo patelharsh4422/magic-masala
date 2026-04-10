@@ -626,7 +626,38 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div><h4>Chat on WhatsApp</h4><p>Quick response, direct chat</p></div>
       </div>
     </div>
-    <div class="mapbox"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3673.5!2d72.6514!3d22.9784!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e85b1e0000001%3A0x1!2sVastral%2C+Ahmedabad%2C+Gujarat!5e0!3m2!1sen!2sin!4v1" loading="lazy" allowfullscreen></iframe></div>
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <!-- CONTACT FORM -->
+      <div class="contact-form-card">
+        <h3>Send us a Message</h3>
+        <p>Fill the form and we will get back to you within 24 hours.</p>
+        <div class="fg">
+          <label class="flab">Your Name <span class="req">*</span></label>
+          <input id="cf-name" class="finp" type="text" placeholder="Your full name">
+        </div>
+        <div class="fg">
+          <label class="flab">Email <span class="req">*</span></label>
+          <input id="cf-email" class="finp" type="email" placeholder="your@email.com">
+        </div>
+        <div class="fg">
+          <label class="flab">Phone</label>
+          <input id="cf-phone" class="finp" type="tel" placeholder="+91 XXXXX XXXXX">
+        </div>
+        <div class="fg" style="margin-bottom:18px">
+          <label class="flab">Message <span class="req">*</span></label>
+          <textarea id="cf-message" class="finp" style="min-height:100px;resize:vertical" placeholder="How can we help you?"></textarea>
+        </div>
+        <button class="fsub" id="cf-btn" onclick="submitContact()">Send Message</button>
+        <div class="cf-success" id="cf-success">
+          <svg style="width:22px;height:22px;margin-bottom:6px;display:block;margin-left:auto;margin-right:auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Message sent successfully! We will reply soon. 🎉
+        </div>
+      </div>
+      <!-- MAP -->
+      <div class="mapbox" style="height:280px;position:static">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3673.5!2d72.6514!3d22.9784!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e85b1e0000001%3A0x1!2sVastral%2C+Ahmedabad%2C+Gujarat!5e0!3m2!1sen!2sin!4v1" loading="lazy" allowfullscreen></iframe>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -978,6 +1009,65 @@ function showCouponMsg(el, txt, type) {
   if(!el) return;
   el.textContent = txt;
   el.className = 'coupon-msg ' + type;
+}
+
+
+// ── WEB3FORMS CONTACT ──────────────────────────────────────
+async function submitContact() {
+  const name    = document.getElementById('cf-name')?.value.trim();
+  const email   = document.getElementById('cf-email')?.value.trim();
+  const phone   = document.getElementById('cf-phone')?.value.trim();
+  const message = document.getElementById('cf-message')?.value.trim();
+
+  if (!name || !email || !message) {
+    showToast('Please fill name, email and message');
+    return;
+  }
+
+  const btn = document.getElementById('cf-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span>Sending...';
+
+  try {
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        access_key : 'a80ba346-1ce4-4fcb-bf83-5cf62f9bc4af',
+        subject    : 'New Message from Magic Masala Website',
+        from_name  : 'Magic Masala Website',
+        name       : name,
+        email      : email,
+        phone      : phone || 'Not provided',
+        message    : message,
+        botcheck   : ''
+      })
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      document.getElementById('cf-success').classList.add('show');
+      document.getElementById('cf-name').value    = '';
+      document.getElementById('cf-email').value   = '';
+      document.getElementById('cf-phone').value   = '';
+      document.getElementById('cf-message').value = '';
+      btn.innerHTML = 'Message Sent!';
+      setTimeout(() => {
+        btn.disabled  = false;
+        btn.innerHTML = 'Send Message';
+        document.getElementById('cf-success').classList.remove('show');
+      }, 5000);
+    } else {
+      showToast('Failed to send. Please try again.');
+      btn.disabled  = false;
+      btn.innerHTML = 'Send Message';
+    }
+  } catch(e) {
+    showToast('Network error. Please try again.');
+    btn.disabled  = false;
+    btn.innerHTML = 'Send Message';
+  }
 }
 
 updCnt();
