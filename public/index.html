@@ -1,74 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-5KHR6NQH');</script>
-<!-- End Google Tag Manager -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Magic Masala | Best Vegetarian Restaurant & Banquets in Vastral, Ahmedabad</title>
-<meta name="description" content="Magic Masala Restaurant & Banquets — Authentic vegetarian Indian cuisine in Vastral, Ahmedabad. Book a table online, explore our menu, and enjoy a royal dining experience.">
-<meta name="keywords" content="restaurant Vastral, restaurant Ahmedabad, vegetarian restaurant Ahmedabad, Magic Masala restaurant, banquet hall Vastral, Indian food Ahmedabad, table booking Ahmedabad">
-<meta name="author" content="Magic Masala Restaurant & Banquets">
-<meta name="robots" content="index, follow">
-<meta property="og:title" content="Magic Masala | Restaurant & Banquets — Vastral, Ahmedabad">
-<meta property="og:description" content="Authentic vegetarian Indian cuisine in Vastral, Ahmedabad. Book a table online.">
-<meta property="og:type" content="restaurant">
-<meta property="og:url" content="https://magic-masala.onrender.com">
-<link rel="canonical" href="https://magic-masala.onrender.com">
-<!-- Schema Markup: Tells Google this is a Restaurant -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Restaurant",
-  "name": "Magic Masala Restaurant & Banquets",
-  "image": "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=1200&q=80",
-  "url": "https://magic-masala.onrender.com",
-  "telephone": "+919327815264",
-  "email": "patelharsh17308@gmail.com",
-  "priceRange": "₹₹",
-  "servesCuisine": "Indian",
-  "menu": "https://magic-masala.onrender.com/#menu",
-  "acceptsReservations": "True",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "Vastral",
-    "addressLocality": "Ahmedabad",
-    "addressRegion": "Gujarat",
-    "postalCode": "382418",
-    "addressCountry": "IN"
-  },
-  "geo": {
-    "@type": "GeoCoordinates",
-    "latitude": 22.9784,
-    "longitude": 72.6514
-  },
-  "openingHoursSpecification": {
-    "@type": "OpeningHoursSpecification",
-    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
-    "opens": "11:00",
-    "closes": "23:00"
-  },
-  "sameAs": [
-    "https://www.instagram.com",
-    "https://www.facebook.com"
-  ]
-}
-</script>
-<!-- Google tag (gtag.js) — Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZE2BE5SLG3"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-ZE2BE5SLG3');
-</script>
-<!-- Razorpay Checkout SDK -->
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<title>Magic Masala | Restaurant & Banquets</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -180,45 +115,8 @@ body{background:var(--bg);color:var(--w);font-family:'Inter',sans-serif;font-wei
 .dd{font-size:.81rem;color:#7a6a58;line-height:1.5;margin-bottom:14px}
 .df{display:flex;align-items:center;justify-content:space-between}
 .dp{color:var(--gold);font-weight:600;font-size:1rem}
-
-/* ── QUANTITY CONTROLLER on card ── */
 .ab{background:var(--gold);color:#fff;border:none;padding:7px 15px;border-radius:50px;font-size:.81rem;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}
 .ab:hover{background:var(--gold2);transform:scale(1.04)}
-.qty-ctrl-card{display:flex;align-items:center;gap:0;border-radius:50px;overflow:hidden;border:1.5px solid var(--gold)}
-.qcb{width:30px;height:30px;background:var(--gold);color:#fff;border:none;font-size:1.1rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;font-family:'Inter',sans-serif}
-.qcb:hover{background:var(--gold2)}
-.qcn{min-width:28px;text-align:center;font-size:.85rem;font-weight:700;color:var(--gold);background:#fff;height:30px;display:flex;align-items:center;justify-content:center}
-
-/* ── STICKY CART BAR ── */
-.sticky-bar{position:fixed;bottom:0;left:0;right:0;z-index:800;background:var(--gold);color:#fff;padding:14px 22px;display:none;align-items:center;justify-content:space-between;box-shadow:0 -4px 24px rgba(200,150,10,.4);cursor:pointer;transition:all .3s}
-.sticky-bar.show{display:flex}
-.sticky-bar:hover{background:var(--gold2)}
-.sb-left{display:flex;align-items:center;gap:10px}
-.sb-count{background:rgba(0,0,0,.2);border-radius:50px;padding:3px 10px;font-size:.8rem;font-weight:700}
-.sb-txt{font-size:.92rem;font-weight:600}
-.sb-right{display:flex;align-items:center;gap:6px;font-size:.92rem;font-weight:700}
-.sb-right svg{width:16px;height:16px}
-
-/* ── COUPON SECTION ── */
-.coupon-wrap{background:rgba(200,150,10,.06);border:1.5px dashed rgba(200,150,10,.3);border-radius:10px;padding:14px 16px;margin-bottom:16px}
-.coupon-title{font-size:.82rem;font-weight:600;color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:6px}
-.coupon-title svg{width:15px;height:15px}
-.coupon-row{display:flex;gap:8px}
-.coupon-inp{flex:1;background:var(--bgi);border:1px solid rgba(255,255,255,.1);color:#fff;padding:10px 13px;border-radius:8px;font-family:'Inter',sans-serif;font-size:.88rem;outline:none;letter-spacing:.08em;text-transform:uppercase;transition:border-color .2s}
-.coupon-inp:focus{border-color:rgba(200,150,10,.4)}
-.coupon-inp::placeholder{color:rgba(255,255,255,.25);letter-spacing:normal;text-transform:none}
-.coupon-apply{background:var(--gold);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-family:'Inter',sans-serif;font-size:.86rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0}
-.coupon-apply:hover{background:var(--gold2)}
-.coupon-msg{font-size:.78rem;margin-top:7px;display:none}
-.coupon-msg.ok{color:#4ade80;display:block}
-.coupon-msg.err{color:#f87171;display:block}
-
-/* ── SAVINGS CARD ── */
-.savings-card{background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.2);border-radius:10px;padding:12px 16px;margin-bottom:14px;display:none}
-.savings-card.show{display:block}
-.savings-row{display:flex;justify-content:space-between;align-items:center;font-size:.83rem}
-.savings-row .l{color:rgba(74,222,128,.8)}
-.savings-row .r{color:#4ade80;font-weight:700}
 
 /* GALLERY */
 .gallery{padding:78px 60px;background:var(--bg)}
@@ -301,8 +199,8 @@ textarea.finp{resize:vertical;min-height:86px}
 .co-h h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,4vw,3.4rem);font-weight:800;color:#fff}
 .co-body{max-width:1040px;margin:0 auto;padding:0 28px 70px;display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:start}
 .co-card{background:var(--bg3);border:1px solid var(--bd);border-radius:14px;padding:26px 28px}
-.co-card h3{font-family:'Playfair Display',serif;font-size:1.12rem;font-weight:700;color:#fff;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--bd)}
-.co-item{display:flex;align-items:center;padding:15px 0;border-bottom:1px solid var(--bd);gap:10px}
+.co-card h3{font-family:'Playfair Display',serif;font-size:1.12rem;font-weight:700;color:#fff;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--bd)}
+.co-item{display:flex;align-items:center;padding:13px 0;border-bottom:1px solid var(--bd);gap:9px}
 .co-in{flex:1}
 .co-in strong{font-size:.88rem;font-weight:600;color:#fff;display:block;margin-bottom:3px}
 .co-in span{font-size:.77rem;color:var(--gold)}
@@ -314,13 +212,11 @@ textarea.finp{resize:vertical;min-height:86px}
 .dbtn:hover{transform:scale(1.2)}
 .dbtn svg{width:15px;height:15px}
 .copr{font-weight:600;font-size:.88rem;min-width:62px;text-align:right}
-.cosum{padding-top:16px;display:flex;flex-direction:column;gap:10px}
-.corow{display:flex;justify-content:space-between;align-items:center;font-size:.86rem;padding:2px 0}
+.cosum{padding-top:14px;display:flex;flex-direction:column;gap:6px}
+.corow{display:flex;justify-content:space-between;align-items:center;font-size:.84rem}
 .corow .l{color:var(--tm)}
-.corow.tot{padding-top:12px;margin-top:4px;border-top:1px solid var(--bd)}
-.corow.tot .l{color:#fff;font-weight:700;font-size:.96rem}
-.corow.tot .r{color:var(--gold);font-weight:700;font-size:1.06rem}
-
+.corow.tot .l{color:#fff;font-weight:600;font-size:.94rem}
+.corow.tot .r{color:var(--gold);font-weight:700;font-size:1.03rem}
 .paybtn{width:100%;background:var(--gold);color:#fff;border:none;padding:14px;border-radius:10px;font-family:'Inter',sans-serif;font-size:.95rem;font-weight:600;cursor:pointer;margin-top:17px;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s}
 .paybtn:hover{background:var(--gold2)}
 .paybtn svg{width:15px;height:15px}
@@ -353,15 +249,15 @@ textarea.finp{resize:vertical;min-height:86px}
 #bfil 
 
 /* SECRET DOT */
-.sdot{position:fixed;bottom:24px;left:24px;background:#180d03;border:1px solid #180d03;color:#180d03;cursor:pointer;z-index:9999;transition:all .3s;padding:7px 13px;border-radius:50px;font-family:"Inter",sans-serif;font-size:.72rem;font-weight:500;letter-spacing:.06em;user-select:none}
-.sdot:hover{background:#180d03;border-color:#180d03;color:#180d03}
+.sdot{position:fixed;bottom:24px;left:24px;background:rgba(200,150,10,.15);border:1px solid rgba(200,150,10,.35);color:rgba(200,150,10,.7);cursor:pointer;z-index:9999;transition:all .25s;padding:7px 13px;border-radius:50px;font-family:"Inter",sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.06em;backdrop-filter:blur(4px)}
+.sdot:hover{background:rgba(200,150,10,.28);border-color:rgba(200,150,10,.6);color:var(--gold)}
 
 /* FABs */
-.hfab{position:fixed;bottom:132px;right:18px;width:44px;height:44px;background:rgba(28,16,5,.88);border:1px solid rgba(200,150,10,.32);color:var(--gold);border-radius:50%;cursor:pointer;z-index:498;box-shadow:0 4px 16px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;transition:all .25s;opacity:0;pointer-events:none;backdrop-filter:blur(4px)}
+.hfab{position:fixed;bottom:80px;right:18px;width:44px;height:44px;background:rgba(28,16,5,.88);border:1px solid rgba(200,150,10,.32);color:var(--gold);border-radius:50%;cursor:pointer;z-index:498;box-shadow:0 4px 16px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;transition:all .25s;opacity:0;pointer-events:none;backdrop-filter:blur(4px)}
 .hfab.vis{opacity:1;pointer-events:all}
 .hfab:hover{background:var(--gold);color:#fff;border-color:var(--gold)}
 .hfab svg{width:17px;height:17px}
-.wfab{position:fixed;bottom:80px;right:18px;width:50px;height:50px;background:#25D366;color:#fff;border:none;border-radius:50%;z-index:498;box-shadow:0 4px 20px rgba(37,211,102,.44);display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all .25s}
+.wfab{position:fixed;bottom:20px;right:18px;width:50px;height:50px;background:#25D366;color:#fff;border:none;border-radius:50%;z-index:498;box-shadow:0 4px 20px rgba(37,211,102,.44);display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all .25s}
 .wfab:hover{background:#1ebe5d;transform:scale(1.08)}
 .wfab svg{width:24px;height:24px}
 
@@ -403,10 +299,6 @@ textarea.finp{resize:vertical;min-height:86px}
 </style>
 </head>
 <body>
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5KHR6NQH"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
 
 <!-- NAVBAR -->
 <nav class="nav" id="nav">
@@ -601,6 +493,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 <!-- CONTACT -->
+ <form action="https://api.web3forms.com/submit" method="POST">
+  <input type="hidden" name="access_key" value="a80ba346-1ce4-4fcb-bf83-5cf62f9bc4af">
+  <input type="text" name="name" required>
+  <input type="email" name="email" required>
+  <textarea name="message" required></textarea>
+  <button type="submit">Submit Form</button>
+</form>
 <div id="contact" class="page">
   <div class="ph"><h1>Contact Us</h1><p>We would love to hear from you. Drop by or reach out anytime.</p></div>
   <div class="cbody">
@@ -626,38 +525,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div><h4>Chat on WhatsApp</h4><p>Quick response, direct chat</p></div>
       </div>
     </div>
-    <div style="display:flex;flex-direction:column;gap:20px">
-      <!-- CONTACT FORM -->
-      <div class="contact-form-card">
-        <h3>Send us a Message</h3>
-        <p>Fill the form and we will get back to you within 24 hours.</p>
-        <div class="fg">
-          <label class="flab">Your Name <span class="req">*</span></label>
-          <input id="cf-name" class="finp" type="text" placeholder="Your full name">
-        </div>
-        <div class="fg">
-          <label class="flab">Email <span class="req">*</span></label>
-          <input id="cf-email" class="finp" type="email" placeholder="your@email.com">
-        </div>
-        <div class="fg">
-          <label class="flab">Phone</label>
-          <input id="cf-phone" class="finp" type="tel" placeholder="+91 XXXXX XXXXX">
-        </div>
-        <div class="fg" style="margin-bottom:18px">
-          <label class="flab">Message <span class="req">*</span></label>
-          <textarea id="cf-message" class="finp" style="min-height:100px;resize:vertical" placeholder="How can we help you?"></textarea>
-        </div>
-        <button class="fsub" id="cf-btn" onclick="submitContact()">Send Message</button>
-        <div class="cf-success" id="cf-success">
-          <svg style="width:22px;height:22px;margin-bottom:6px;display:block;margin-left:auto;margin-right:auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-          Message sent successfully! We will reply soon. 🎉
-        </div>
-      </div>
-      <!-- MAP -->
-      <div class="mapbox" style="height:280px;position:static">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3673.5!2d72.6514!3d22.9784!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e85b1e0000001%3A0x1!2sVastral%2C+Ahmedabad%2C+Gujarat!5e0!3m2!1sen!2sin!4v1" loading="lazy" allowfullscreen></iframe>
-      </div>
-    </div>
+    <div class="mapbox"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3673.5!2d72.6514!3d22.9784!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e85b1e0000001%3A0x1!2sVastral%2C+Ahmedabad%2C+Gujarat!5e0!3m2!1sen!2sin!4v1" loading="lazy" allowfullscreen></iframe></div>
   </div>
 </div>
 
@@ -665,18 +533,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <button class="sdot" onclick="window.open('/admin','_blank')">Owner</button>
 
 <!-- HOME FAB -->
-
-<!-- STICKY CART BAR -->
-<div class="sticky-bar" id="sticky-bar" onclick="go('checkout')">
-  <div class="sb-left">
-    <span class="sb-count" id="sb-count">0 items</span>
-    <span class="sb-txt">added to cart</span>
-  </div>
-  <div class="sb-right">
-    View Cart
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-  </div>
-</div>
 <button class="hfab" id="hfab" onclick="go('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></button>
 
 <!-- WHATSAPP FAB -->
@@ -706,7 +562,7 @@ function closeSB(){document.getElementById('mob-sb').classList.remove('open');do
 // CART
 let cart=JSON.parse(localStorage.getItem('mm_cart')||'[]');
 const saveCart=()=>{localStorage.setItem('mm_cart',JSON.stringify(cart));updCnt()};
-function addToCart(id,name,price){const ex=cart.find(c=>c.id===id);if(ex)ex.qty++;else cart.push({id,name,price,qty:1});saveCart();showToast(name+' added to cart');updStickyBar();}
+function addToCart(id,name,price){const ex=cart.find(c=>c.id===id);if(ex)ex.qty++;else cart.push({id,name,price,qty:1});saveCart();showToast(name+' added to cart')}
 function removeFromCart(id){cart=cart.filter(c=>c.id!==id);saveCart();renderCO()}
 function changeQty(id,d){const it=cart.find(c=>c.id===id);if(!it)return;it.qty+=d;if(it.qty<=0)removeFromCart(id);else{saveCart();renderCO()}}
 function updCnt(){const n=cart.reduce((s,c)=>s+c.qty,0);document.getElementById('cart-count').textContent=n;const m=document.getElementById('mob-cart-count');if(m)m.textContent=n}
@@ -722,10 +578,7 @@ function go(id){
   if(history.state?.page!==id)history.pushState({page:id},'','#'+id);
   window.scrollTo(0,0);
   const fab=document.getElementById('hfab');if(fab)fab.classList.toggle('vis',id!=='home');
-  // Hide sticky bar on checkout page
-  const bar=document.getElementById('sticky-bar');
-  if(bar)bar.style.display=(id==='checkout')?'none':'';
-  if(id==='checkout'){renderCO();couponApplied=false;}
+  if(id==='checkout')renderCO();
   if(id==='menu')renderMenuPage();
 }
 window.addEventListener('popstate',e=>{
@@ -741,53 +594,11 @@ history.replaceState({page:'home'},'','#home');
 
 // DISH CARD
 function dishCard(item){
-  const inCart = cart.find(c=>c.id===item.id);
-  const btnHtml = inCart
-    ? `<div class="qty-ctrl-card"><button class="qcb" onclick="event.stopPropagation();cardQty(${item.id},-1)">−</button><span class="qcn">${inCart.qty}</span><button class="qcb" onclick="event.stopPropagation();cardQty(${item.id},1)">+</button></div>`
-    : `<button class="ab" onclick="cardAdd(${item.id},'${item.name.replace(/'/g,"\\'")}',${item.price})">+ Add</button>`;
-  return `<div class="dc" id="dc-${item.id}"><div class="di"><img src="${item.img}" alt="${item.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=500&q=80'"><span class="vb"><svg style="width:9px;height:9px" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>Veg</span></div><div class="db"><div class="dn">${item.name}</div><div class="dd">${item.desc}</div><div class="df"><span class="dp">Rs. ${item.price}</span>${btnHtml}</div></div></div>`;
-}
-
-function cardAdd(id,name,price){
-  addToCart(id,name,price);
-  refreshCardBtn(id);
-  updStickyBar();
-}
-function cardQty(id,d){
-  const it=cart.find(c=>c.id===id);
-  if(!it)return;
-  it.qty+=d;
-  if(it.qty<=0)cart=cart.filter(c=>c.id!==id);
-  saveCart();
-  refreshCardBtn(id);
-  updStickyBar();
-}
-function refreshCardBtn(id){
-  // Refresh just the button inside the card
-  const item = allMenu.find(i=>i.id===id) || (typeof HOME_MENU!=='undefined'?HOME_MENU.find(i=>i.id===id):null);
-  if(!item) return;
-  const inCart=cart.find(c=>c.id===id);
-  const btnHtml=inCart
-    ?`<div class="qty-ctrl-card"><button class="qcb" onclick="event.stopPropagation();cardQty(${id},-1)">−</button><span class="qcn">${inCart.qty}</span><button class="qcb" onclick="event.stopPropagation();cardQty(${id},1)">+</button></div>`
-    :`<button class="ab" onclick="cardAdd(${id},'${item.name.replace(/'/g,"\\'")}',${item.price})">+ Add</button>`;
-  const card=document.getElementById('dc-'+id);
-  if(card){const df=card.querySelector('.df');if(df){const old=df.querySelector('.ab,.qty-ctrl-card');if(old)old.outerHTML=btnHtml;else df.insertAdjacentHTML('beforeend',btnHtml);}}
-}
-function updStickyBar(){
-  const n=cart.reduce((s,c)=>s+c.qty,0);
-  const bar=document.getElementById('sticky-bar');
-  const sc=document.getElementById('sb-count');
-  if(!bar)return;
-  if(n>0){
-    sc.textContent=n+' item'+(n!==1?'s':'');
-    bar.classList.add('show');
-  } else {
-    bar.classList.remove('show');
-  }
+  return `<div class="dc"><div class="di"><img src="${item.img}" alt="${item.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=500&q=80'"><span class="vb"><svg style="width:9px;height:9px" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>Veg</span></div><div class="db"><div class="dn">${item.name}</div><div class="dd">${item.desc}</div><div class="df"><span class="dp">Rs. ${item.price}</span><button class="ab" onclick="addToCart(${item.id},'${item.name.replace(/'/g,"\\'")}',${item.price})">+ Add</button></div></div></div>`;
 }
 
 // LOAD HOME
-async function loadHome(){try{const r=await fetch(API+'/api/menu');const d=await r.json();if(!allMenu.length)allMenu=d;document.getElementById('home-grid').innerHTML=d.slice(0,6).map(dishCard).join('')}catch(e){document.getElementById('home-grid').innerHTML='<p style="color:var(--tm);text-align:center;padding:40px;grid-column:1/-1">Could not load dishes.</p>'}}
+async function loadHome(){try{const r=await fetch(API+'/api/menu');const d=await r.json();document.getElementById('home-grid').innerHTML=d.slice(0,6).map(dishCard).join('')}catch(e){document.getElementById('home-grid').innerHTML='<p style="color:var(--tm);text-align:center;padding:40px;grid-column:1/-1">Could not load dishes.</p>'}}
 
 // MENU
 const CATS=['All','Beverages','Breads','Desserts','Main Course','Rice & Biryani','Starters'];
@@ -812,37 +623,9 @@ function renderCO(){
   const w=document.getElementById('co-wrap');
   if(!cart.length){w.innerHTML=`<div class="co-body"><div class="empty-co"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg><h3>Your cart is empty</h3><p>Add some dishes from our menu first</p><button class="btp" onclick="go('menu')">Browse Menu</button></div></div>`;return}
   const tot=cart.reduce((s,c)=>s+c.price*c.qty,0),tq=cart.reduce((s,c)=>s+c.qty,0);
-  w.innerHTML=`<div class="co-body"><div class="co-card"><h3>Order Summary</h3>${cart.map(it=>`<div class="co-item"><div class="co-in"><strong>${it.name}</strong><span>Rs. ${it.price} each</span></div><div class="qctrl"><button class="qb" onclick="changeQty(${it.id},-1)">−</button><span class="qn">${it.qty}</span><button class="qb" onclick="changeQty(${it.id},1)">+</button></div><button class="dbtn" onclick="removeFromCart(${it.id})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg></button><span class="copr">Rs. ${it.price*it.qty}</span></div>`).join('')}<div class="cosum">
-        <div class="corow"><span class="l">Subtotal (${tq} items)</span><span class="r">Rs. ${tot}</span></div>
-        <div class="corow"><span class="l">Delivery Fee</span><span class="r" style="color:#4ade80;font-weight:600">FREE</span></div>
-        <div id="discount-row" class="corow" style="display:none"><span class="l">Discount (10%)</span><span class="r" style="color:#4ade80;font-weight:600" id="discount-amt"></span></div>
-        <div class="corow tot" style="margin-top:8px;padding-top:10px;border-top:1px solid var(--bd)"><span class="l">Total Payable</span><span class="r" id="final-total">Rs. ${tot}</span></div>
-      </div>
-      <!-- SAVINGS -->
-      <div class="savings-card" id="savings-card">
-        <div class="savings-row"><span class="l">Your savings on this order</span><span class="r" id="savings-amt"></span></div>
-      </div>
-      <!-- COUPON -->
-      <div class="coupon-wrap">
-        <div class="coupon-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>Apply Coupon</div>
-        <div class="coupon-row">
-          <input class="coupon-inp" id="coupon-inp" type="text" placeholder="Enter coupon code" maxlength="20">
-          <button class="coupon-apply" onclick="applyCoupon(${tot})">Apply</button>
-        </div>
-        <div class="coupon-msg" id="coupon-msg"></div>
-      </div>
-    </div>
-  <div class="co-card"><h3>Your Details</h3><div class="fg"><label class="flab">Name <span class="req">*</span></label><input id="o-name" class="finp" type="text" placeholder="Your name"></div><div class="fg"><label class="flab">Phone <span class="req">*</span></label><input id="o-phone" class="finp" type="tel" placeholder="+91 XXXXX XXXXX"></div><div class="fg"><label class="flab">Email</label><input id="o-email" class="finp" type="email" placeholder="your@email.com"></div><div class="fg"><label class="flab">Delivery Address <span class="req">*</span></label><textarea id="o-address" class="finp" style="min-height:72px;resize:vertical" placeholder="House no, Street, Area, City..."></textarea></div>
-  <button class="paybtn" id="pay-btn" onclick="placeOrder(${tot})">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-        Pay Rs. ${tot} — UPI / Card
-      </button>
-      <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;flex-wrap:wrap">
-        <span style="font-size:.7rem;color:var(--tm)">Secured by</span>
-        <span style="background:#072654;color:#fff;padding:3px 10px;border-radius:4px;font-size:.72rem;font-weight:700;letter-spacing:.04em">Razorpay</span>
-        <span style="font-size:.7rem;color:var(--tm)">|</span>
-        <span style="font-size:.72rem;color:var(--tm)">GPay · PhonePe · Paytm · Card</span>
-      </div>
+  w.innerHTML=`<div class="co-body"><div class="co-card"><h3>Order Summary</h3>${cart.map(it=>`<div class="co-item"><div class="co-in"><strong>${it.name}</strong><span>Rs. ${it.price} each</span></div><div class="qctrl"><button class="qb" onclick="changeQty(${it.id},-1)">−</button><span class="qn">${it.qty}</span><button class="qb" onclick="changeQty(${it.id},1)">+</button></div><button class="dbtn" onclick="removeFromCart(${it.id})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg></button><span class="copr">Rs. ${it.price*it.qty}</span></div>`).join('')}<div class="cosum"><div class="corow"><span class="l">Items</span><span class="r">${tq}</span></div><div class="corow tot"><span class="l">Total</span><span class="r">Rs. ${tot}</span></div></div></div>
+  <div class="co-card"><h3>Your Details</h3><div class="fg"><label class="flab">Name <span class="req">*</span></label><input id="o-name" class="finp" type="text" placeholder="Your name"></div><div class="fg"><label class="flab">Phone <span class="req">*</span></label><input id="o-phone" class="finp" type="tel" placeholder="+91 XXXXX XXXXX"></div><div class="fg"><label class="flab">Email</label><input id="o-email" class="finp" type="email" placeholder="your@email.com"></div>
+  <button class="paybtn" id="pay-btn" onclick="placeOrder(${tot})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Pay Rs. ${tot}</button>
   <p class="secnote">Secured by Stripe. You will be redirected to complete payment.</p></div></div>`;
 }
 
@@ -858,113 +641,16 @@ async function submitBooking(){
   finally{btn.disabled=false;btn.innerHTML='Confirm Booking'}
 }
 
-// ── RAZORPAY PAYMENT ─────────────────────────────────────
-async function placeOrder(tot) {
-  const n    = document.getElementById('o-name')?.value.trim();
-  const p    = document.getElementById('o-phone')?.value.trim();
-  const addr = document.getElementById('o-address')?.value.trim();
-  const email= document.getElementById('o-email')?.value.trim();
-
-  // Validate fields
-  if (!n || !p || !addr) {
-    showToast('Please fill name, phone and delivery address');
-    return;
-  }
-
-  const btn = document.getElementById('pay-btn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spin"></span>Creating order...';
-
-  try {
-    // Step 1: Create Razorpay order from our server
-    const orderRes = await fetch(API + '/api/create-order', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ amount: tot })
-    });
-    const orderData = await orderRes.json();
-
-    if (!orderData.id) {
-      showToast('Could not create payment order. Try again.');
-      btn.disabled = false;
-      btn.innerHTML = 'Pay Rs. ' + tot + ' — UPI / Card';
-      return;
-    }
-
-    // Step 2: Open Razorpay payment popup
-    const options = {
-      key: orderData.key,           // Test key from server
-      amount: orderData.amount,     // in paise
-      currency: 'INR',
-      name: 'Magic Masala',
-      description: 'Food Order',
-      image: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=200&q=80',
-      order_id: orderData.id,
-      prefill: {
-        name:  n,
-        email: email || '',
-        contact: p
-      },
-      theme: { color: '#c8960a' },
-      method: { upi: true, card: true, netbanking: false, wallet: false, emi: false },
-
-      // Step 3: On payment success
-      handler: async function(response) {
-        btn.innerHTML = '<span class="spin"></span>Verifying payment...';
-        try {
-          // Verify payment on server
-          const verifyRes = await fetch(API + '/api/verify-payment', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              razorpay_order_id:   response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature:  response.razorpay_signature,
-              // Order details
-              name: n, phone: p, email: email,
-              address: addr,
-              items: cart.map(c => c.name + ' x' + c.qty).join(', '),
-              total: tot
-            })
-          });
-          const verifyData = await verifyRes.json();
-
-          if (verifyData.success) {
-            cart = []; saveCart(); updStickyBar();
-            showMod('Payment Successful! 🎉', 'Thank you ' + n + '! Your payment of Rs. ' + tot + ' was successful. Your order is being prepared!');
-          } else {
-            showToast('Payment verification failed. Contact us.');
-          }
-        } catch(e) {
-          showToast('Verification error. Please contact us.');
-        }
-        btn.disabled = false;
-        btn.innerHTML = 'Pay Rs. ' + tot + ' — UPI / Card';
-      },
-
-      // On payment failure
-      modal: {
-        ondismiss: function() {
-          btn.disabled = false;
-          btn.innerHTML = 'Pay Rs. ' + tot + ' — UPI / Card';
-          showToast('Payment cancelled.');
-        }
-      }
-    };
-
-    const rzp = new Razorpay(options);
-    rzp.on('payment.failed', function(resp) {
-      showToast('Payment failed: ' + resp.error.description);
-      btn.disabled = false;
-      btn.innerHTML = 'Pay Rs. ' + tot + ' — UPI / Card';
-    });
-    rzp.open();
-
-  } catch(e) {
-    showToast('Could not connect to server.');
-    btn.disabled = false;
-    btn.innerHTML = 'Pay Rs. ' + tot + ' — UPI / Card';
-  }
+// ORDER
+async function placeOrder(tot){
+  const n=document.getElementById('o-name')?.value.trim(),p=document.getElementById('o-phone')?.value.trim();
+  if(!n||!p){showToast('Please enter your name and phone');return}
+  const btn=document.getElementById('pay-btn');btn.disabled=true;btn.innerHTML='<span class="spin"></span>Processing...';
+  try{const r=await fetch(API+'/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:n,phone:p,email:document.getElementById('o-email')?.value,items:cart.map(c=>`${c.name} x${c.qty}`).join(', '),total:tot})});
+  const data=await r.json();
+  if(data.success){cart=[];saveCart();showMod('Order Placed!',`Thank you ${n}! Your order of Rs. ${tot} has been received. We will prepare it fresh for you!`)}
+  else showToast(data.error||'Something went wrong')}catch(e){showToast('Could not connect to server.')}
+  finally{if(btn){btn.disabled=false;btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Pay Rs. ${tot}`}}
 }
 
 // MODAL
@@ -975,114 +661,19 @@ function closeMod(){document.getElementById('mod-ov').classList.remove('open');g
 let _tt;
 function showToast(msg){clearTimeout(_tt);const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');_tt=setTimeout(()=>el.classList.remove('show'),2800)}
 
-// ── COUPON ─────────────────────────────────────────────────
-let couponApplied = false;
-function applyCoupon(subtotal) {
-  const inp  = document.getElementById('coupon-inp');
-  const code = inp?.value.trim().toUpperCase();
-  const msg  = document.getElementById('coupon-msg');
-  const discRow  = document.getElementById('discount-row');
-  const discAmt  = document.getElementById('discount-amt');
-  const finalTot = document.getElementById('final-total');
-  const savingsCard = document.getElementById('savings-card');
-  const savingsAmt  = document.getElementById('savings-amt');
-
-  if (!code) { showCouponMsg(msg,'Please enter a coupon code','err'); return; }
-  if (couponApplied) { showCouponMsg(msg,'Coupon already applied!','err'); return; }
-
-  if (code === 'MAGIC10') {
-    const discount = Math.round(subtotal * 0.10);
-    const final    = subtotal - discount;
-    couponApplied  = true;
-    if(discRow) discRow.style.display='flex';
-    if(discAmt) discAmt.textContent='− Rs. '+discount;
-    if(finalTot) finalTot.textContent='Rs. '+final;
-    if(savingsCard) savingsCard.classList.add('show');
-    if(savingsAmt) savingsAmt.textContent='Rs. '+discount;
-    if(inp) inp.disabled=true;
-    showCouponMsg(msg,'Coupon applied! You saved Rs. '+discount+' 🎉','ok');
-  } else {
-    showCouponMsg(msg,'Invalid code. Try MAGIC10','err');
-  }
-}
-function showCouponMsg(el, txt, type) {
-  if(!el) return;
-  el.textContent = txt;
-  el.className = 'coupon-msg ' + type;
-}
-
-
-// ── WEB3FORMS CONTACT ──────────────────────────────────────
-async function submitContact() {
-  const name    = document.getElementById('cf-name')?.value.trim();
-  const email   = document.getElementById('cf-email')?.value.trim();
-  const phone   = document.getElementById('cf-phone')?.value.trim();
-  const message = document.getElementById('cf-message')?.value.trim();
-
-  if (!name || !email || !message) {
-    showToast('Please fill name, email and message');
-    return;
-  }
-
-  const btn = document.getElementById('cf-btn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spin"></span>Sending...';
-
-  try {
-    const res = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        access_key : 'a80ba346-1ce4-4fcb-bf83-5cf62f9bc4af',
-        subject    : 'New Message from Magic Masala Website',
-        from_name  : 'Magic Masala Website',
-        name       : name,
-        email      : email,
-        phone      : phone || 'Not provided',
-        message    : message,
-        botcheck   : ''
-      })
-    });
-
-    const data = await res.json();
-
-    if (data.success) {
-      document.getElementById('cf-success').classList.add('show');
-      document.getElementById('cf-name').value    = '';
-      document.getElementById('cf-email').value   = '';
-      document.getElementById('cf-phone').value   = '';
-      document.getElementById('cf-message').value = '';
-      btn.innerHTML = 'Message Sent!';
-      setTimeout(() => {
-        btn.disabled  = false;
-        btn.innerHTML = 'Send Message';
-        document.getElementById('cf-success').classList.remove('show');
-      }, 5000);
-    } else {
-      showToast('Failed to send. Please try again.');
-      btn.disabled  = false;
-      btn.innerHTML = 'Send Message';
-    }
-  } catch(e) {
-    showToast('Network error. Please try again.');
-    btn.disabled  = false;
-    btn.innerHTML = 'Send Message';
-  }
-}
-
-updCnt();
-loadHome();
-renderMenuPage();
-updStickyBar();
-</script>
-
-
-
-<!-- Omnidimension AI Voice Agent -->
-<button id="omni-open-widget-btn" style="position:fixed;bottom:90px;left:20px;z-index:9999;background:#1a1a2e;color:#fff;border:2px solid #c8960a;border-radius:50px;padding:12px 18px;font-family:Inter,sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 4px 18px rgba(0,0,0,.4);transition:all .2s" onmouseover="this.style.background='#c8960a'" onmouseout="this.style.background='#1a1a2e'">
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
-  Voice Assistant
-</button>
-<script id="omnidimension-web-widget" async src="https://omnidim.io/web_widget.js?secret_key=f23eba4ed6765dd024b784a42a2e381f"></script>
-</body>
-</html>
+// ADMIN
+  const body=document.getElementById('a-body');
+  body.innerHTML='<p style="text-align:center;padding:28px;color:var(--tm)">Loading...</p>';
+  try{
+    const[sr,dr]=await Promise.all([fetch(API+'/api/stats'),fetch(API+'/api/'+curTab)]);
+    const st=await sr.json();let data=await dr.json();
+    const sH=`<div class="a-stats"><div class="scard"><div class="sv">${st.bookings}</div><div class="sl">Total Bookings</div></div><div class="scard"><div class="sv">${st.orders}</div><div class="sl">Total Orders</div></div><div class="scard"><div class="sv">${st.messages}</div><div class="sl">Messages</div></div><div class="scard"><div class="sv">Rs.${st.revenue}</div><div class="sl">Revenue</div></div></div>`;
+    if(curTab==='bookings'){
+      const lb={all:'All Bookings',today:'Today',week:'This Week',month:'This Month',recent:'Most Recent'};
+      if(!fl.length){body.innerHTML=sH+`<div class="empty-a">No bookings for "${lb[bf]}"</div>`;return}
+    }else if(curTab==='orders'){
+      if(!data.length){body.innerHTML=sH+`<div class="empty-a">No orders yet</div>`;return}
+    }else{
+      if(!data.length){body.innerHTML=sH+`<div class="empty-a">No messages yet</div>`;return}
+      
+      body.innerHTML=sH+`<div style="overflow-x:auto"><table class="atable"><thead><tr><th>#</th><th>Name</th><th>Message</th><th>Status</th><th>Sent At</th></tr></thead><tbody>${data.map((m,i)=>`<tr><td>${i+1}</td><td><strong>${m.name}</strong></td>;
