@@ -296,6 +296,7 @@ textarea.finp{resize:vertical;min-height:86px}
 .contact-form-card{background:var(--bg3);border:1px solid var(--bd);border-radius:14px;padding:26px 28px}
 .contact-form-card h3{font-family:'Playfair Display',serif;font-size:1.12rem;font-weight:700;color:#fff;margin-bottom:10px}
 .contact-form-card > p{color:var(--tm);font-size:.85rem;line-height:1.7;margin-bottom:18px}
+.contact-form-card .h-captcha{margin:6px 0 2px}
 .cf-success{display:none;align-items:flex-start;gap:12px;margin-top:16px;padding:14px 16px;border-radius:10px;background:rgba(37,211,102,.08);border:1px solid rgba(37,211,102,.22);color:#d7ffe5}
 .cf-success.show{display:flex}
 .cf-success svg{width:22px;height:22px;flex-shrink:0;color:#58d68d}
@@ -659,6 +660,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <label class="flab">Message <span class="req">*</span></label>
     <textarea id="cf-message" name="message" class="finp" style="min-height:100px;resize:vertical" placeholder="How can we help you?" required></textarea>
   </div>
+  <div class="h-captcha" data-captcha="true"></div>
   <button class="fsub" id="cf-btn" type="submit">Send Message</button>
   <div class="cf-success" id="cf-success">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
@@ -1101,6 +1103,9 @@ updStickyBar();
   Voice Assistant
 </button>
 <script id="omnidimension-web-widget" async src="https://omnidim.io/web_widget.js?secret_key=f23eba4ed6765dd024b784a42a2e381f"></script>
+<script src="https://web3forms.com/client/script.js" async defer></script>
 </body>
 </html>
+
+
 
