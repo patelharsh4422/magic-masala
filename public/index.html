@@ -764,7 +764,7 @@ function dishCard(item){
   const btnHtml = inCart
     ? `<div class="qty-ctrl-card"><button class="qcb" onclick="event.stopPropagation();cardQty(${item.id},-1)">−</button><span class="qcn">${inCart.qty}</span><button class="qcb" onclick="event.stopPropagation();cardQty(${item.id},1)">+</button></div>`
     : `<button class="ab" onclick="cardAdd(${item.id},'${item.name.replace(/'/g,"\\'")}',${item.price})">+ Add</button>`;
-  return `<div class="dc" id="dc-${item.id}"><div class="di"><img src="${item.img}" alt="${item.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=500&q=80'"><span class="vb"><svg style="width:9px;height:9px" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>Veg</span></div><div class="db"><div class="dn">${item.name}</div><div class="dd">${item.desc}</div><div class="df"><span class="dp">Rs. ${item.price}</span>${btnHtml}</div></div></div>`;
+  return `<div class="dc" data-dish-id="${item.id}"><div class="di"><img src="${item.img}" alt="${item.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=500&q=80'"><span class="vb"><svg style="width:9px;height:9px" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>Veg</span></div><div class="db"><div class="dn">${item.name}</div><div class="dd">${item.desc}</div><div class="df"><span class="dp">Rs. ${item.price}</span>${btnHtml}</div></div></div>`;
 }
 
 function cardAdd(id,name,price){
@@ -789,8 +789,12 @@ function refreshCardBtn(id){
   const btnHtml=inCart
     ?`<div class="qty-ctrl-card"><button class="qcb" onclick="event.stopPropagation();cardQty(${id},-1)">−</button><span class="qcn">${inCart.qty}</span><button class="qcb" onclick="event.stopPropagation();cardQty(${id},1)">+</button></div>`
     :`<button class="ab" onclick="cardAdd(${id},'${item.name.replace(/'/g,"\\'")}',${item.price})">+ Add</button>`;
-  const card=document.getElementById('dc-'+id);
-  if(card){const df=card.querySelector('.df');if(df){const old=df.querySelector('.ab,.qty-ctrl-card');if(old)old.outerHTML=btnHtml;else df.insertAdjacentHTML('beforeend',btnHtml);}}
+  document.querySelectorAll(`[data-dish-id="${id}"]`).forEach(card=>{
+    const df=card.querySelector('.df');
+    if(!df) return;
+    const old=df.querySelector('.ab,.qty-ctrl-card');
+    if(old)old.outerHTML=btnHtml;else df.insertAdjacentHTML('beforeend',btnHtml);
+  });
 }
 function updStickyBar(){
   const n=cart.reduce((s,c)=>s+c.qty,0);
@@ -1106,6 +1110,7 @@ updStickyBar();
 <script src="https://web3forms.com/client/script.js" async defer></script>
 </body>
 </html>
+
 
 
 
