@@ -707,8 +707,8 @@ function closeSB(){document.getElementById('mob-sb').classList.remove('open');do
 let cart=JSON.parse(localStorage.getItem('mm_cart')||'[]');
 const saveCart=()=>{localStorage.setItem('mm_cart',JSON.stringify(cart));updCnt()};
 function addToCart(id,name,price){const ex=cart.find(c=>c.id===id);if(ex)ex.qty++;else cart.push({id,name,price,qty:1});saveCart();showToast(name+' added to cart');updStickyBar();}
-function removeFromCart(id){cart=cart.filter(c=>c.id!==id);saveCart();renderCO()}
-function changeQty(id,d){const it=cart.find(c=>c.id===id);if(!it)return;it.qty+=d;if(it.qty<=0)removeFromCart(id);else{saveCart();renderCO()}}
+function removeFromCart(id){cart=cart.filter(c=>c.id!==id);saveCart();updStickyBar();renderCO()}
+function changeQty(id,d){const it=cart.find(c=>c.id===id);if(!it)return;it.qty+=d;if(it.qty<=0)removeFromCart(id);else{saveCart();updStickyBar();renderCO()}}
 function updCnt(){const n=cart.reduce((s,c)=>s+c.qty,0);document.getElementById('cart-count').textContent=n;const m=document.getElementById('mob-cart-count');if(m)m.textContent=n}
 
 // NAVIGATION + BACK BUTTON
@@ -725,7 +725,7 @@ function go(id){
   // Hide sticky bar on checkout page
   const bar=document.getElementById('sticky-bar');
   if(bar)bar.style.display=(id==='checkout')?'none':'';
-  if(id==='checkout'){renderCO();couponApplied=false;}
+  if(id==='checkout')renderCO();
   if(id==='menu')renderMenuPage();
 }
 window.addEventListener('popstate',e=>{
@@ -737,7 +737,9 @@ window.addEventListener('popstate',e=>{
   const fab=document.getElementById('hfab');if(fab)fab.classList.toggle('vis',pg!=='home');
   if(pg==='checkout')renderCO();if(pg==='menu')renderMenuPage();
 });
-history.replaceState({page:'home'},'','#home');
+const initialPage=(location.hash||'#home').slice(1);
+history.replaceState({page:PAGES.includes(initialPage)?initialPage:'home'},'',`#${PAGES.includes(initialPage)?initialPage:'home'}`);
+if(PAGES.includes(initialPage)&&initialPage!=='home')go(initialPage);
 
 // DISH CARD
 function dishCard(item){
@@ -812,11 +814,13 @@ function renderCO(){
   const w=document.getElementById('co-wrap');
   if(!cart.length){w.innerHTML=`<div class="co-body"><div class="empty-co"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg><h3>Your cart is empty</h3><p>Add some dishes from our menu first</p><button class="btp" onclick="go('menu')">Browse Menu</button></div></div>`;return}
   const tot=cart.reduce((s,c)=>s+c.price*c.qty,0),tq=cart.reduce((s,c)=>s+c.qty,0);
+  const discount=couponApplied?Math.round(tot*couponPercent):0;
+  const payable=tot-discount;
   w.innerHTML=`<div class="co-body"><div class="co-card"><h3>Order Summary</h3>${cart.map(it=>`<div class="co-item"><div class="co-in"><strong>${it.name}</strong><span>Rs. ${it.price} each</span></div><div class="qctrl"><button class="qb" onclick="changeQty(${it.id},-1)">−</button><span class="qn">${it.qty}</span><button class="qb" onclick="changeQty(${it.id},1)">+</button></div><button class="dbtn" onclick="removeFromCart(${it.id})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg></button><span class="copr">Rs. ${it.price*it.qty}</span></div>`).join('')}<div class="cosum">
         <div class="corow"><span class="l">Subtotal (${tq} items)</span><span class="r">Rs. ${tot}</span></div>
         <div class="corow"><span class="l">Delivery Fee</span><span class="r" style="color:#4ade80;font-weight:600">FREE</span></div>
-        <div id="discount-row" class="corow" style="display:none"><span class="l">Discount (10%)</span><span class="r" style="color:#4ade80;font-weight:600" id="discount-amt"></span></div>
-        <div class="corow tot" style="margin-top:8px;padding-top:10px;border-top:1px solid var(--bd)"><span class="l">Total Payable</span><span class="r" id="final-total">Rs. ${tot}</span></div>
+        <div id="discount-row" class="corow" style="display:${discount ? 'flex' : 'none'}"><span class="l">Discount (10%)</span><span class="r" style="color:#4ade80;font-weight:600" id="discount-amt">${discount ? '- Rs. ' + discount : ''}</span></div>
+        <div class="corow tot" style="margin-top:8px;padding-top:10px;border-top:1px solid var(--bd)"><span class="l">Total Payable</span><span class="r" id="final-total">Rs. ${payable}</span></div>
       </div>
       <!-- SAVINGS -->
       <div class="savings-card" id="savings-card">
@@ -833,9 +837,9 @@ function renderCO(){
       </div>
     </div>
   <div class="co-card"><h3>Your Details</h3><div class="fg"><label class="flab">Name <span class="req">*</span></label><input id="o-name" class="finp" type="text" placeholder="Your name"></div><div class="fg"><label class="flab">Phone <span class="req">*</span></label><input id="o-phone" class="finp" type="tel" placeholder="+91 XXXXX XXXXX"></div><div class="fg"><label class="flab">Email</label><input id="o-email" class="finp" type="email" placeholder="your@email.com"></div><div class="fg"><label class="flab">Delivery Address <span class="req">*</span></label><textarea id="o-address" class="finp" style="min-height:72px;resize:vertical" placeholder="House no, Street, Area, City..."></textarea></div>
-  <button class="paybtn" id="pay-btn" onclick="placeOrder(${tot})">
+  <button class="paybtn" id="pay-btn" onclick="placeOrder(${payable})">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-        Pay Rs. ${tot} — UPI / Card
+        Pay Rs. ${payable} — UPI / Card
       </button>
       <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;flex-wrap:wrap">
         <span style="font-size:.7rem;color:var(--tm)">Secured by</span>
@@ -977,6 +981,7 @@ function showToast(msg){clearTimeout(_tt);const el=document.getElementById('toas
 
 // ── COUPON ─────────────────────────────────────────────────
 let couponApplied = false;
+let couponPercent = 0.1;
 function applyCoupon(subtotal) {
   const inp  = document.getElementById('coupon-inp');
   const code = inp?.value.trim().toUpperCase();
